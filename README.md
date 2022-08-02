@@ -51,9 +51,20 @@ Use the aggr command to combine the data of all mice
 - Script: /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/DESC_step1.py
 - Usage: sbatch /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/DESC_step1.sh
 - Wd: /data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/DESC/DESC_final_run
-- Inputs:
+- Input:
   - Directory to 10X cellranger aggr folder: /data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/scrattch/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
   - Inside filtered_feature_bc_matrix you need to unzip the 3 files (matrix, barcodes, features) and rename features to cells.tsv
+- Output: 
+  - Slurm output file will give the number of cells per cluster (near bottom)
+  - clusters.csv
+  - umap.csv
+  - tsne.csv
+  - figures/umap0.8desc_0.8.png - umap with each cluster a different color
+  - result_DESC/ - contains files on the encoders and models
+  - desc_allgenes.h5ad - anndata object containing all genes passing QC
+  - desc_result.h5ad- anndata object containing only HVG genes
+
+
 
 
 3. 
