@@ -70,7 +70,7 @@ Output:
 - QC_train.png
 
 
-## Map our data onto AIBS dataset
+# Map our data onto AIBS dataset
 ```{r}
 cd /RNAseq
 mkdir AIBSmapping
@@ -91,5 +91,8 @@ Output:
 - prediction_scores.csv: lists each cell, the predicted cell type label, and prediction scores for each cell type
 - umap_referenceOA-celltypes.png: umap of the reference (AIBS) with cell type labels
 - umap_OA_query-predictedLabels.png: umap of the query (our data) projected onto AIBS space, labeled with the predicted labels
+
+## test accuracy of mapping
+
 
 
