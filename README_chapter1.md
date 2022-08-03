@@ -1,25 +1,30 @@
-This file details all steps of the analysis, including scripts and location of input/output data files.
+This file details all steps of the analysis for Chapter 1, including scripts and location of input/output data files.
 
-# Raw snRNA-seq data processing
-Raw reads were processed using commands from the Cell Ranger v4.0.0 pipeline.
+# Set-up and download packages, data
+## Set up working directory structure
+```{r} 
+mkdir RNAseq
+cd RNAseq
+mkdir data QC
+cd data
+mkdir our_data AIBSmapping
+```
 
 ## Download Cell Ranger
-- Follow steps here: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/installation
-
-## The following steps were performed by scientists at 10X: 
-- The mkfastq command was used to demultiplex the BCL files and create fastq files
-- The count command was used, with parameter --expect-cells set to 7000, to perform alignment, barcode and UMI counting to generate feature-barcode matrices
+- Follow steps here (make note of download location): https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/installation
 
 ## Download the feature-barcode matrices:
 - Download from: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
-- Download to:  
+- Download to: data/our_data/  
   - 262,263,279 had enough data at the second round and can be found here: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/deepseq_2
   - 276,277,278 were sequenced a third round and can be found here: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/deepseq_3
 
+
+
 ## Aggregate the data of all mice
 Use the aggr command to combine the data of all mice
-- Wd: /data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/scrattch/
+- Wd: /Data/our_data
 - Generate a libraries.csv file with the locations of each mouse's data, in the following format: 
 ![](embedded_images/libraries.csv.png)
   - the order of rows determines the suffix attached to the barcodes of each mouse (in order to differentiate which mouse is which in the combined file), ie mouse 262 will have -1, 263 -2, etc
