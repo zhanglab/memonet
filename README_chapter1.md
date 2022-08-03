@@ -4,10 +4,11 @@ This file details all steps of the analysis for Chapter 1, including scripts and
 ## Set up working directory structure
 ```{r} 
 mkdir RNAseq
+  # this will be the root directory
 cd RNAseq
-mkdir data QC
+mkdir data
 cd data
-mkdir our_data AIBSmapping
+mkdir our_data AIBS_data
 ```
 
 ## Download Packages 
@@ -24,16 +25,16 @@ DESC
 Our dataset:
 - Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
-- Download to: data/our_data/  
+- Download to: RNAseq/data/our_data/  
 
 AIBS dataset:
 - Location of data:
-- Download to: data/AIBS_data
+- Download to: RNAseq/data/AIBS_data
 
 # Pre-processing
 ## Aggregate the data of all mice
 Use the aggr command to combine the data of all mice
-- Wd: /data/our_data
+- Wd: RNAseq/data/our_data
 - Generate a libraries.csv file with the locations of each mouse's data, in the following format: 
 ![](embedded_images/libraries.csv.png)
   - the order of rows determines the suffix attached to the barcodes of each mouse (in order to differentiate which mouse is which in the combined file), ie mouse 262 will have -1, 263 -2, etc
@@ -46,9 +47,49 @@ Use the aggr command to combine the data of all mice
   ```{r}
   nohup srun -o jobs%j.out -c 20 \cellranger aggr --csv=/data/our_data/libraries.csv --none --id=combined_cellranger_no-normalization &
   ```
-   - The output directory will be found here: /data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
+   - The output directory will be found here: RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
  
+## Determine QC thresholds
+```{r}
+cd /RNAseq
+mkdir QC
+```
+
+Script: /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/QCthresholds.r 
+
+Usage: sbatch /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/test_QCthresholdsDESC.sh
+
+Wd: RNAseq/QC
+
+Input: data directory for each mouse, ie /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/deepseq_2/slPsiwmg_JB_262_1_2_3/filtered_feature_bc_matrix/
+
+Output:
+- ctrl_without_cutoff.png: violin plots of the 3 control mice before QC
+- QC_ctrl.png: violin plots of the 3 control mice after QC
+- train_without_cutoff.png
+- QC_train.png
 
 
+## Map our data onto AIBS dataset
+```{r}
+cd /RNAseq
+mkdir AIBSmapping
+cd AIBSmapping
+mkdir OA test
+  # 'OA' refers to Our data mapped to AIBS data
+```
+
+Script: pairwiseOA_clean.r
+
+Wd: RNAseq/AIBSmapping/OA
+
+Input: 
+- 10X directory of all mice combined: RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+- AIBS dataset. The three files here: RNAseq/data/AIBS_data
+
+Output: 
+- prediction_scores.csv: lists each cell, the predicted cell type label, and prediction scores for each cell type
+- umap_referenceOA-celltypes.png: umap of the reference (AIBS) with cell type labels
+- umap_OA_query-predictedLabels.png: umap of the query (our data) projected onto AIBS space, labeled with the predicted labels
 
 
