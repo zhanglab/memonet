@@ -22,13 +22,13 @@ DESC
 
 ## Download datasets
 Our dataset:
-- Download from: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 
+- Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
 - Download to: data/our_data/  
-  - 262,263,279 had enough data at the second round and can be found here: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/deepseq_2
-  - 276,277,278 were sequenced a third round and can be found here: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/deepseq_3
 
 AIBS dataset:
+- Location of data:
+- Download to: data/AIBS_data
 
 # Pre-processing
 ## Aggregate the data of all mice
