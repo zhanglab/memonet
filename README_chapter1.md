@@ -72,7 +72,7 @@ Output:
 - QC_train.png
 
 
-# Map our data onto AIBS dataset
+# Map our data onto AIBS dataset ("OA mapping")
 ```{r}
 cd ~/Downloads/RNAseq
 mkdir AIBSmapping
@@ -136,9 +136,11 @@ Wd: RNAseq/AIBSmapping/test
 
 Input: 
 - prediction_cutoff.csv
- 
+- ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
+
 Output:
-- 
+- AIBStest_confusionMtx.png: heatmap of original cell type labels vs predicted labels for AIBS testing
+- maxPredictionScores-AIBStest_and_OA.csv: table of mean and median prediction.score.max for AIBS testing and OA mapping; shows calculation for all celltypes and subset for L2/3 cells
 
 
 
