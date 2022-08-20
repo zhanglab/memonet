@@ -24,7 +24,7 @@ DESC
 
 ## Download datasets
 Our dataset:
-- Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 
+- Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 (* will need to change this to the ncbi repository number once we upload data there)
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
 - Download to: RNAseq/data/our_data/  
 
@@ -57,8 +57,9 @@ mkdir QC
 ```
 
 Script: /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/QCthresholds.r 
+- Choose cutoffs based on the plots with no cutoff, then update code to use those cutoffs and visualize the remaining dataset
 
-Usage: sbatch /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/test_QCthresholdsDESC.sh
+Usage: sbatch /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/QCthresholds.sh
 
 Wd: RNAseq/QC
 
@@ -142,5 +143,5 @@ Output:
 - AIBStest_confusionMtx.png: heatmap of original cell type labels vs predicted labels for AIBS testing
 - maxPredictionScores-AIBStest_and_OA.csv: table of mean and median prediction.score.max for AIBS testing and OA mapping; shows calculation for all celltypes and subset for L2/3 cells
 
-
+# Investigate cell type proportions
 
