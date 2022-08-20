@@ -39,6 +39,8 @@ Use the aggr command to combine the data of all mice
 - Generate a libraries.csv file with the locations of each mouse's data, in the following format: 
 ![](embedded_images/libraries.csv.png)
   - the order of rows determines the suffix attached to the barcodes of each mouse (in order to differentiate which mouse is which in the combined file), ie mouse 262 will have -1, 263 -2, etc
+  - trained mice: 263,277,279 ie -2,-4,-6
+  - control mice: 262,276,278 ie -1,-3,-5
 - Run aggr command:
   - First run this line on the terminal so that Cell Ranger package can be found, replacing the path with the location of your Cell Ranger download location: 
   ```{r} 
