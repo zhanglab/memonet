@@ -180,7 +180,7 @@ Output:
 - L23subclass_tr_ctrl_prop_hist.png
 - 'summary' variable lists p-values
 
-# DE analysis for all glutamatergic, all GABAergic neurons
+# DE analysis for glutamatergic, GABAergic neurons
 ## 1. Generate barcode files for glutamatergic and GABAergic neurons
 Script: OverallDatasetDescription2.r, Part B
 
@@ -190,7 +190,7 @@ Output:
 - ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
 - ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv
 
-## 2. Run DESeq2
+## 2. Run DESeq2, train vs control
 ```{r}
 cd ~/Downloads/RNAseq/AIBSmapping/OA
 mkdir DESeq2
@@ -229,5 +229,45 @@ Output directory: all_cells_combined/
 ## 3. Summarize DE results: what IEGs are significant?
 genelist.r (* going to have to format a version for manuscript)
 
+
+# DE analysis for L2/3 neurons
+```{r}
+cd ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2
+mkdir L23
+```
+
+## 1. Run DESeq2: train vs control
+Script: DESeq2_DESC_B-L23aibs.r
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23
+
+Input: L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
+
+Output directory: all_cells_combined/
+- 1unnormalized_counts_from_dds.csv: unnormalized gene expression
+- 1normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- 1normalized_counts_from_dds.csv: normalized gene expression
+- 1_train_vs_control_all_genes.csv: DESeq2 results for all genes
+- 1_train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+
+## 2. Summarize DE results: what IEGs are significant?
+genelist.r (* going to have to format a version for manuscript)
+
+## 3. How many DEGs overlap with the 1000 discriminating genes (DG) used for clustering?
+### a. Download DG list
+```{r}
+cd ~/Downloads/RNAseq/
+mkdir cluster_by_genes
+```
+
+Location on github: ..../Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+Download to: ~/Downloads/RNAseq/cluster_by_genes
+
+### b. Calculate gene set overlap
+Script: OverallDatasetDescription2.r, part C
+
+Input:
+- DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+- L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/1_train_vs_control_sig_genes.csv
 
 
