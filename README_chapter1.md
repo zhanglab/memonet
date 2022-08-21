@@ -200,17 +200,17 @@ mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl
 
 Script: DESeq2_DESC_B-L23aibs.r
 
-** DE analysis of glutamatergic neurons **
+**DE analysis of glutamatergic neurons**
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
 
 Output: 
--
--
 
-** DE analysis of GABAergic neurons **
+
+
+**DE analysis of GABAergic neurons**
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
 
