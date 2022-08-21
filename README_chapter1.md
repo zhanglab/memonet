@@ -147,3 +147,17 @@ Output:
 
 # Investigate cell type proportions
 
+script: OverallDatasetDescription2.r
+
+functions:
+- calculate cell subclass proportion
+- calculate inhibitory neuron percentage
+- calculate neuron subclass proportion (neurons only)
+- compare neuron subclass proportion in our dataset and AIBS
+- 
+input:
+- AIBS metadata: ~/Downloads/RNAseq/data/AIBS_data/aibs_barcodes.tsv
+- cell type predictions for our data: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
+
+
+
