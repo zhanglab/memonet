@@ -200,25 +200,34 @@ mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl
 
 Script: DESeq2_DESC_B-L23aibs.r
 
-**DE analysis of glutamatergic neurons**
+**DE analysis of glutamatergic neurons:**
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
 
-Output: 
+Output directory: all_cells_combined/
+- 1unnormalized_counts_from_dds.csv: unnormalized gene expression
+- 1normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- 1normalized_counts_from_dds.csv: normalized gene expression
+- 1_train_vs_control_all_genes.csv: DESeq2 results for all genes
+- 1_train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
-
-
-**DE analysis of GABAergic neurons**
+**DE analysis of GABAergic neurons:**
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv
 
-Output: 
-- 
+Output directory: all_cells_combined/
+- 1unnormalized_counts_from_dds.csv: unnormalized gene expression
+- 1normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- 1normalized_counts_from_dds.csv: normalized gene expression
+- 1_train_vs_control_all_genes.csv: DESeq2 results for all genes
+- 1_train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
+## 3. Summarize DE results: what IEGs are significant?
+genelist.r (* going to have to format a version for manuscript)
 
 
 
