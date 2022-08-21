@@ -174,13 +174,14 @@ Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
 
 Input: 
 - Choose an input file at the beginning of script. For this part calculating L2/3 proportions, use ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
-- 
+- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
 
 Output:
 - L23subclass_tr_ctrl_prop_hist.png
 - 'summary' variable lists p-values
 
 # DE analysis for all glutamatergic, all GABAergic neurons
+## 1. Generate barcode files for glutamatergic and GABAergic neurons
 Script: OverallDatasetDescription2.r, Part B
 
 Input: data_neurons variable from Part A
@@ -188,6 +189,35 @@ Input: data_neurons variable from Part A
 Output: 
 - ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
 - ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv
+
+## 2. Run DESeq2
+```{r}
+cd ~/Downloads/RNAseq/AIBSmapping/OA
+mkdir DESeq2
+cd DESeq2
+mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl
+```
+
+Script: DESeq2_DESC_B-L23aibs.r
+
+** DE analysis of glutamatergic neurons **
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
+
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
+
+Output: 
+-
+-
+
+** DE analysis of GABAergic neurons **
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
+
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv
+
+Output: 
+- 
 
 
 
