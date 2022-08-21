@@ -31,6 +31,7 @@ Our dataset:
 AIBS dataset:
 - Location of data:
 - Download to: RNAseq/data/AIBS_data
+- Rename the files to: aibs_barcodes.tsv, aibs_genes.tsv, aibs_matrix.mtx
 
 # Pre-processing
 ## Aggregate the data of all mice
@@ -145,19 +146,49 @@ Output:
 - AIBStest_confusionMtx.png: heatmap of original cell type labels vs predicted labels for AIBS testing
 - maxPredictionScores-AIBStest_and_OA.csv: table of mean and median prediction.score.max for AIBS testing and OA mapping; shows calculation for all celltypes and subset for L2/3 cells
 
+## Choose L2/3 cutoff score of 0.2
+Script: prediction_score_cutoff_barcodes.r
+
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
+
+Output: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
+
 # Investigate cell type proportions
 
-script: OverallDatasetDescription2.r
+Script: OverallDatasetDescription2.r, Part A
 
-functions:
-- calculate cell subclass proportion
+Functions:
+- calculate cell subclass proportion (neurons and glia)
 - calculate inhibitory neuron percentage
 - calculate neuron subclass proportion (neurons only)
-- compare neuron subclass proportion in our dataset and AIBS
-- 
-input:
+- plot neuron subclass proportion, comparing our dataset and AIBS
+
+Input:
 - AIBS metadata: ~/Downloads/RNAseq/data/AIBS_data/aibs_barcodes.tsv
 - cell type predictions for our data: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
+
+## L2/3 subtypes: Is there train/control enrichment?
+Script: statistics.r
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
+
+Input: 
+- Choose an input file at the beginning of script. For this part calculating L2/3 proportions, use ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
+- 
+
+Output:
+- L23subclass_tr_ctrl_prop_hist.png
+- 'summary' variable lists p-values
+
+# DE analysis for all glutamatergic, all GABAergic neurons
+Script: OverallDatasetDescription2.r, Part B
+
+Input: data_neurons variable from Part A
+
+Output: 
+- ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv
+
 
 
 
