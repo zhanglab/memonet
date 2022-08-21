@@ -271,3 +271,37 @@ Input:
 - L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/1_train_vs_control_sig_genes.csv
 
 
+# Cluster L2/3 neurons using the 1000 DGs
+## First, check which processes are enriched in the 1000 DGs
+Script: Figures.r part “ GO analysis of classifier gene list”
+
+Wd: *
+
+Input: *
+- DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+- Background gene list: *have to add section for how this is generated
+
+Output: *
+
+## Prepare gene expression data for input to DESC clustering
+Subset expression matrix to 1000 DGs and normalize
+
+Script: highRankedGenes.r
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/
+
+Input:
+- DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+- Unnormalized expression file: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/1unnormalized_counts_from_dds.csv
+
+Output:
+- L23_DGmtx.csv: normalized expression matrix consisting of the 100 DGs 
+
+## Run DESC clustering
+
+
+
+
+
+
+
