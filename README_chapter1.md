@@ -386,7 +386,7 @@ Output directory: all_cells/
 - x_vs_others_all_genes.csv: DESeq2 results for all genes
 - x_vs_others_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
-*Combine cluster result files into one file:* 
+**Combine cluster result files into one file:** 
 
 Script: DESC-DESeq2-table.r
 
