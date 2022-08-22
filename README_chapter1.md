@@ -321,7 +321,7 @@ Input:
 Output: * need to figure out why the output file differs when using new directory structure 
 - L23_DGmtx.csv: normalized expression matrix consisting of the 1000 DGs 
 
-## Run DESC clustering
+## 2. Run DESC clustering
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes
 mkdir DESC
@@ -342,7 +342,59 @@ Output:
 - figures/
    - umap0.8desc_0.8.png: visual of cluster umap projection 
 
+## 3. Visualize cluster train/control proportion
+Script: classifier_umap_plot.r
 
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/figures
+
+Input: 
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/DESC/umap.csv
+
+Output: classifier_umap_tr_ctrl.svg
+
+### Is there train/control enrichment?
+Script: statistics.r
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/figures
+
+Input:
+- Choose an input file at the beginning of script. For this part calculating cluster train/control proportions, use ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+
+Output:
+- cluster_tr_ctrl_prop_hist.svg
+- 'summary' variable lists p-values
+
+# DE analysis of clusters
+## Run DESeq2, one cluster vs the others
+```{r}
+cd ~/Downloads/RNAseq/cluster_by_genes/DESC
+mkdir DESeq2
+```
+
+Script: DESeq2_DESC_whole_subclusters.r
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/DESeq2
+
+Input: 
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+
+Output directory: all_cells/
+- unnormalized_counts_from_dds.csv: unnormalized gene expression
+- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- normalized_counts_from_dds.csv: normalized gene expression
+- x_vs_others_all_genes.csv: DESeq2 results for all genes
+- x_vs_others_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+
+*Combine cluster result files into one file:* 
+
+Script: DESC-DESeq2-table.r
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/DESeq2/all_cells
+
+Input: files ending in *_all_genes.csv
+
+Output: DEGstats_padj01.csv
 
 
 
