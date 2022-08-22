@@ -16,21 +16,20 @@ mkdir our_data AIBS_data
 Cell Ranger
 - Follow steps here (make note of download location): https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/installation
 
-Seurat
+Seurat *
 
-
-DESC
+DESC *
 
 
 ## Download datasets
 Our dataset:
 - Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 (* will need to change this to the ncbi repository number once we upload data there)
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
-- Download to: RNAseq/data/our_data/  
+- Download to: ~/Downloads/RNAseq/data/our_data/  
 
 AIBS dataset:
 - Location of data:
-- Download to: RNAseq/data/AIBS_data
+- Download to: ~/Downloads/RNAseq/data/AIBS_data
 - Rename the files to: aibs_barcodes.tsv, aibs_genes.tsv, aibs_matrix.mtx
 
 # Pre-processing
@@ -51,7 +50,7 @@ Use the aggr command to combine the data of all mice
   ```{r}
   nohup srun -o jobs%j.out -c 20 \cellranger aggr --csv=/data/our_data/libraries.csv --none --id=combined_cellranger_no-normalization &
   ```
-   - The output directory will be found here: RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
+   - The output directory will be found here: ~/Downloads/RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
  
 ## Determine QC thresholds
 ```{r}
@@ -64,10 +63,10 @@ Script: /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorgan
 
 Usage: sbatch /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/QCthresholds.sh
 
-Wd: RNAseq/QC
+Wd: ~/Downloads/RNAseq/QC
 
 Input: 
-- Data directory for each mouse, ie /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/deepseq_2/slPsiwmg_JB_262_1_2_3/filtered_feature_bc_matrix/
+- Data directory for each mouse, ie ~/Downloads/RNAseq/data/our_data/slPsiwmg_JB_262_1_2_3/filtered_feature_bc_matrix/
 
 Output:
 - ctrl_without_cutoff.png: violin plots of the 3 control mice before QC
@@ -87,14 +86,14 @@ mkdir OA test
 
 Script: pairwiseOA_clean.r
 
-Wd: RNAseq/AIBSmapping/OA
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA
 
 Query: our data
 Reference: AIBS data
 
 Input: 
-- 10X directory of all mice combined: RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
-- AIBS dataset. The three files here: RNAseq/data/AIBS_data
+- 10X directory of all mice combined: ~/Downloads/RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+- AIBS dataset. The three files here: ~/Downloads/RNAseq/data/AIBS_data
 
 Output: 
 - prediction_scores.csv: lists each cell, the predicted cell type label, and prediction scores for each cell type
@@ -114,7 +113,7 @@ Reference: remaining 75% of AIBS data
 
 Script: testA_prediction_cutoff.r
 
-Wd: RNAseq/AIBSmapping/test
+Wd: ~/Downloads/RNAseq/AIBSmapping/test
 
 Input: 
 - AIBS dataset. The three files here: RNAseq/data/AIBS_data
@@ -125,7 +124,7 @@ Output:
 ### 2. Combine the 100 prediction score files into one file
 Script: testA_prediction_cutoff_table.r
 
-Wd: RNAseq/AIBSmapping/test
+Wd: ~/Downloads/RNAseq/AIBSmapping/test
 
 Input: 
 - 100 prediction_scores_*.csv files
@@ -136,7 +135,7 @@ Output:
 ### 3. Summarize results in RStudio: calculate false classification percentage, generate confusion matrix, compare mean and median scores of the test with OA mapping
 Script: testA_prediction_cutoff2.r
 
-Wd: RNAseq/AIBSmapping/test
+Wd: ~/Downloads/RNAseq/AIBSmapping/test
 
 Input: 
 - prediction_cutoff.csv
