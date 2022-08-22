@@ -101,10 +101,6 @@ Output:
 - umap_OA_query-predictedLabels.png: umap of the query (our data) projected onto AIBS space, labeled with the predicted labels
 
 ## Test the accuracy of mapping on AIBS data
-```{r}
-cd ~/Downloads/RNAseq/AIBSmapping/test
-```
-
 ### 1. Generate a test dataset (downsample to 25% of each cell type; remove sample cells from rest of reference) and perform label transfer from the remaining 75% of data. Do this 100 times.
 
 Query: 25% of AIBS data
@@ -259,7 +255,8 @@ cd ~/Downloads/RNAseq/
 mkdir cluster_by_genes
 ```
 
-Location on github: ..../Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+Location on github:   *   ...../Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+
 Download to: ~/Downloads/RNAseq/cluster_by_genes
 
 ### b. Calculate gene set overlap
@@ -283,7 +280,7 @@ Output:
 - background_genes-enrichment.csv: background gene list, in gene symbol format
 - background_genes-enrichment_entrezid.csv: background gene list, in entrezid format
 
-### Now run GO
+## Now run GO
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes
 mkdir GO
