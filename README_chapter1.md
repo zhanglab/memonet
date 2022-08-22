@@ -267,9 +267,10 @@ Input:
 - L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/1_train_vs_control_sig_genes.csv
 
 
-# Cluster L2/3 neurons using the 1000 DGs
-## First, check which processes are enriched in the 1000 DGs
-### To do this, need to generate a background gene list: this is all genes in the L2/3 dataset that are input to DESeq2
+
+# GO analysis of the 1000 DGs
+Before continuing with the analysis, we want to check whether the 1000 DGs are actually related to learning.
+## To run GO, you first need to generate a background gene list: this is all genes in the L2/3 dataset that are input to DESeq2
 Script: background_genes-enrichment.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
@@ -303,23 +304,43 @@ Output:
 - DiscriminantGenesGO_neg.csv: GO results for the 500 negative DGs
 - DiscriminantGenesGO_neg.png: treeplot showing GO results for the negative DGs
 
-## Prepare gene expression data for input to DESC clustering
+Now that we've confirmed the 1000 DGs do enrich for learning-related functions, we can cluster our L2/3 neurons using these genes.
+
+# Cluster L2/3 neurons using the 1000 DGs
+## 1. Prepare gene expression data for input to DESC clustering
 Subset expression matrix to 1000 DGs and normalize
 
 Script: highRankedGenes.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/
 
-Input:
+Input: 
 - DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
 - Unnormalized expression file: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/1unnormalized_counts_from_dds.csv
 
-Output:
-- L23_DGmtx.csv: normalized expression matrix consisting of the 100 DGs 
+Output: * need to figure out why the output file differs when using new directory structure 
+- L23_DGmtx.csv: normalized expression matrix consisting of the 1000 DGs 
 
 ## Run DESC clustering
+```{r}
+cd ~/Downloads/RNAseq/cluster_by_genes
+mkdir DESC
+```
 
+Script: DESC_highRankGenes_step1.py
 
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC
+
+Input: 
+- Normalized expression matrix of the 1000 Dgs: ~/Downloads/RNAseq/cluster_by_genes/L23_DGmtx.csv
+
+Output:
+- clusters.csv: lists each cell barcode and the cluster it is assigned
+- umap.csv: umap x and y coordinates; row indices correspond to the barcode order in clusters.csv
+- tsne.csv: tsne x and y coordinates
+- result_DESC/: directory for encoder weights and model info
+- figures/
+   - umap0.8desc_0.8.png: visual of cluster umap projection 
 
 
 
