@@ -273,15 +273,31 @@ Input:
 
 # Cluster L2/3 neurons using the 1000 DGs
 ## First, check which processes are enriched in the 1000 DGs
-Script: Figures.r part “ GO analysis of classifier gene list”
+### To do this, need to generate a background gene list: this is all genes in the L2/3 dataset that are input to DESeq2
 
-Wd: *
+
+### Now run GO
+```{r}
+cd ~/Downloads/RNAseq/cluster_by_genes
+mkdir GO
+```
+
+Script: Figures.r part “ GO analysis of classifier gene list”
+- edit the 'comparison' variable to 'all', 'pos', 'neg' to run GO on all 1000, 500 pos, 500 neg, respectively
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/GO
 
 Input: *
 - DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
 - Background gene list: *have to add section for how this is generated
 
-Output: *
+Output: 
+- DiscriminantGenesGO_all.csv: GO results for the 1000 DGs
+- DiscriminantGenesGO_all.png: treeplot showing GO results for the 1000 DGs
+- DiscriminantGenesGO_pos.csv: GO results for the 500 positive DGs
+- DiscriminantGenesGO_pos.png: treeplot showing GO results for the positive DGs
+- DiscriminantGenesGO_neg.csv: GO results for the 500 negative DGs
+- DiscriminantGenesGO_neg.png: treeplot showing GO results for the negative DGs
 
 ## Prepare gene expression data for input to DESC clustering
 Subset expression matrix to 1000 DGs and normalize
