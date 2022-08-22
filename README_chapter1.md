@@ -274,7 +274,15 @@ Input:
 # Cluster L2/3 neurons using the 1000 DGs
 ## First, check which processes are enriched in the 1000 DGs
 ### To do this, need to generate a background gene list: this is all genes in the L2/3 dataset that are input to DESeq2
+Script: background_genes-enrichment.r
 
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
+
+Input: *
+
+Output:
+- background_genes-enrichment.csv: background gene list, in gene symbol format
+- background_genes-enrichment_entrezid.csv: background gene list, in entrezid format
 
 ### Now run GO
 ```{r}
