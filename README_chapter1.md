@@ -222,7 +222,9 @@ Output directory: all_cells_combined/
 - 1_train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
 ## 3. Summarize DE results: what IEGs are significant?
-genelist.r (* going to have to format a version for manuscript)
+DEGvisuals.r
+
+Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
 
 
 # DE analysis for L2/3 neurons
@@ -246,7 +248,9 @@ Output directory: all_cells_combined/
 - 1_train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
 ## 2. Summarize DE results: what IEGs are significant?
-genelist.r (* going to have to format a version for manuscript)
+DEGvisuals.r
+
+Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
 
 ## 3. How many DEGs overlap with the 1000 discriminating genes (DG) used for clustering?
 ### a. Download DG list
@@ -275,11 +279,12 @@ Script: background_genes-enrichment.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
 
-Input: *
+Input: 
+- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
 
 Output:
-- background_genes-enrichment.csv: background gene list, in gene symbol format
-- background_genes-enrichment_entrezid.csv: background gene list, in entrezid format
+- background_genes-enrichment0.2.csv: background gene list, in gene symbol format
+- background_genes-enrichment_entrezid0.2.csv: background gene list, in entrezid format
 
 ## Now run GO
 ```{r}
@@ -292,9 +297,9 @@ Script: Figures.r part “ GO analysis of classifier gene list”
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/GO
 
-Input: *
+Input: 
 - DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
-- Background gene list: *have to add section for how this is generated
+- Background gene list: ~/Downloads/RNAseq/AIBSmapping/OA/background_genes-enrichment0.2.csv
 
 Output: 
 - DiscriminantGenesGO_all.csv: GO results for the 1000 DGs
@@ -366,7 +371,7 @@ Output:
 - 'summary' variable lists p-values
 
 # DE analysis of clusters
-## Run DESeq2, one cluster vs the others
+## 1. Run DESeq2, one cluster vs the others
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes/DESC
 mkdir DESeq2
@@ -394,7 +399,85 @@ Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/DESeq2/all_cells
 
 Input: files ending in *_all_genes.csv
 
-Output: DEGstats_padj01.csv
+Output: 
+- DEGstats_allGenes.csv: all genes
+- DEGstats_padj0.05.csv: significant genes (padj <0.05)
+
+## 2. Summarize DE results: what IEGs are significant?
+DEGvisuals.r
+
+Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
+
+# Map AIBS L2/3 cells onto our L2/3 cells and annotate by cluster 
+```{r}
+cd ~/Downloads/RNAseq/AIBSmapping
+mkdir AO
+  # 'AO' stands for AIBS onto Our cells
+```
+
+Script: labelTransfer_AO_umapDESC.r
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/AO
+
+Input:
+- 10X directory of all mice combined: ~/Downloads/RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+- AIBS dataset. The three files here: ~/Downloads/RNAseq/data/AIBS_data
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/DESC/umap.csv
+
+Output:
+- prediction_scores.csv: prediction score for the AIBS cells onto the clusters
+- Images:
+  - umap_classifierRef.png: our cells visualized in umap space 
+  - umap_aibsL23_colored_by_classifierCluster.png: aibs cells placed in classifier space, colored by their predicted cluster
+
+**What proportion of AIBS cells map to each cluster?**
+Script: labelTransfer_AO_stats.r
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/AO
+
+Input: *
+
+Output: *
+
+Since almost half of AIBS cells are assigned to C4, we would like to assume C4 as the baseline condition and run another DE analysis of each cluster in reference to C4.
+
+# DE analysis of clusters
+## 1. Run DESeq2, one cluster vs C4
+Script: 
+
+Wd: 
+
+Input: 
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+
+Output directory: * (the script makes a separate directory per cluster and then you combine the _all_genes files into a new dir for table script
+- unnormalized_counts_from_dds.csv: unnormalized gene expression
+- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- normalized_counts_from_dds.csv: normalized gene expression
+- x_vs_4_all_genes.csv: DESeq2 results for all genes
+- x_vs_4_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+
+**Combine cluster result files into one file:** 
+
+Script: DESC-DESeq2-table.r
+
+Wd: 
+
+Input: files ending in *_all_genes.csv
+
+Output: 
+- DEGstats_allGenes.csv: all genes
+- DEGstats_padj0.05.csv: significant genes (padj <0.05)
+
+## 2. Summarize DE results: what IEGs are significant?
+DEGvisuals.r
+
+Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
+
+
+
+
 
 
 
