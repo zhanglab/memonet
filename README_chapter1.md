@@ -9,7 +9,7 @@ mkdir RNAseq
 cd RNAseq
 mkdir data
 cd data
-mkdir our_data AIBS_data
+mkdir memonet_data AIBS_data
 ```
 
 ## Download Packages 
@@ -22,10 +22,10 @@ DESC *
 
 
 ## Download datasets
-Our dataset:
+Memonet dataset:
 - Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 (* will need to change this to the ncbi repository number once we upload data there)
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
-- Download to: ~/Downloads/RNAseq/data/our_data/  
+- Download to: ~/Downloads/RNAseq/data/memonet_data/  
 
 AIBS dataset:
 - Location of data:
@@ -35,7 +35,7 @@ AIBS dataset:
 # Pre-processing
 ## Aggregate the data of all mice
 Use the aggr command to combine the data of all mice
-- Wd: RNAseq/data/our_data
+- Wd: RNAseq/data/memonet_data
 - Generate a libraries.csv file with the locations of each mouse's data, in the following format: 
 ![](embedded_images/libraries.csv.png)
   - the order of rows determines the suffix attached to the barcodes of each mouse (in order to differentiate which mouse is which in the combined file), ie mouse 262 will have -1, 263 -2, etc
@@ -48,9 +48,9 @@ Use the aggr command to combine the data of all mice
   ```
   - Then run aggr. --none turns off depth normalization, due to the requirement of the DESC clustering package needing unnormalized counts as input. --id is the name of the output file
   ```{r}
-  nohup srun -o jobs%j.out -c 20 \cellranger aggr --csv=/data/our_data/libraries.csv --none --id=combined_cellranger_no-normalization &
+  nohup srun -o jobs%j.out -c 20 \cellranger aggr --csv=/data/memonet_data/libraries.csv --none --id=combined_cellranger_no-normalization &
   ```
-   - The output directory will be found here: ~/Downloads/RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
+   - The output directory will be found here: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
  
 ## Determine QC thresholds
 ```{r}
@@ -66,7 +66,7 @@ Usage: sbatch /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_u
 Wd: ~/Downloads/RNAseq/QC
 
 Input: 
-- Data directory for each mouse, ie ~/Downloads/RNAseq/data/our_data/slPsiwmg_JB_262_1_2_3/filtered_feature_bc_matrix/
+- Data directory for each mouse, ie ~/Downloads/RNAseq/data/memonet_data/slPsiwmg_JB_262_1_2_3/filtered_feature_bc_matrix/
 
 Output:
 - ctrl_without_cutoff.png: violin plots of the 3 control mice before QC
@@ -92,7 +92,7 @@ Query: our data
 Reference: AIBS data
 
 Input: 
-- 10X directory of all mice combined: ~/Downloads/RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+- 10X directory of all mice combined: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
 - AIBS dataset. The three files here: ~/Downloads/RNAseq/data/AIBS_data
 
 Output: 
@@ -420,7 +420,7 @@ Script: labelTransfer_AO_umapDESC.r
 Wd: ~/Downloads/RNAseq/AIBSmapping/AO
 
 Input:
-- 10X directory of all mice combined: ~/Downloads/RNAseq/data/our_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+- 10X directory of all mice combined: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
 - AIBS dataset. The three files here: ~/Downloads/RNAseq/data/AIBS_data
 - Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
 - Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/DESC/umap.csv
