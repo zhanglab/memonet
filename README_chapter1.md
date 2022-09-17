@@ -22,10 +22,15 @@ DESC *
 
 
 ## Download datasets
+```{r} 
+cd ~/Downloads/RNAseq/memonet_data
+mkdir data_download
+```
+
 Memonet dataset:
 - Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 (* will need to change this to the ncbi repository number once we upload data there)
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
-- Download to: ~/Downloads/RNAseq/data/memonet_data/  
+- Download to: ~/Downloads/RNAseq/data/memonet_data/data_download
 
 AIBS dataset:
 - Location of data:
@@ -82,6 +87,8 @@ mkdir AIBSmapping
 cd AIBSmapping
 mkdir OA test
   # 'OA' refers to Our data mapped to AIBS data
+cd OA
+mkdir barcode_files count_matrices 
 ```
 
 Script: pairwiseOA_clean.r
@@ -146,7 +153,7 @@ Script: prediction_score_cutoff_barcodes.r
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
 
-Output: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
+Output: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.2.csv
 
 # Investigate cell type proportions
 
@@ -169,7 +176,7 @@ Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
 
 Input: 
 - Choose an input file at the beginning of script. For this part calculating L2/3 proportions, use ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
-- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
+- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.2.csv
 
 Output:
 - L23subclass_tr_ctrl_prop_hist.png
@@ -182,8 +189,8 @@ Script: OverallDatasetDescription2.r, Part B
 Input: data_neurons variable from Part A
 
 Output: 
-- ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
-- ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
 
 ## 2. Run DESeq2, train vs control
 ```{r}
@@ -199,7 +206,7 @@ Script: DESeq2_DESC_B-L23aibs.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
 
-Input: ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
 
 Output directory: all_cells_combined/
 - 1unnormalized_counts_from_dds.csv: unnormalized gene expression
@@ -212,7 +219,7 @@ Output directory: all_cells_combined/
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
 
-Input: ~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
 
 Output directory: all_cells_combined/
 - 1unnormalized_counts_from_dds.csv: unnormalized gene expression
@@ -238,7 +245,7 @@ Script: DESeq2_DESC_B-L23aibs.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23
 
-Input: L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
+Input: L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.2.csv
 
 Output directory: all_cells_combined/
 - 1unnormalized_counts_from_dds.csv: unnormalized gene expression
@@ -280,7 +287,7 @@ Script: background_genes-enrichment.r
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
 
 Input: 
-- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/L23barcodes-fromAIBS_0.2.csv
+- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.2.csv
 
 Output:
 - background_genes-enrichment0.2.csv: background gene list, in gene symbol format
@@ -289,16 +296,18 @@ Output:
 ## Now run GO
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes
+mkdir 0.3cutoff
+cd 0.3cutoff
 mkdir GO
 ```
 
 Script: Figures.r part “ GO analysis of classifier gene list”
 - edit the 'comparison' variable to 'all', 'pos', 'neg' to run GO on all 1000, 500 pos, 500 neg, respectively
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/GO
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO
 
 Input: 
-- DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+- DG list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
 - Background gene list: ~/Downloads/RNAseq/AIBSmapping/OA/background_genes-enrichment0.2.csv
 
 Output: 
@@ -313,31 +322,31 @@ Now that we've confirmed the 1000 DGs do enrich for learning-related functions, 
 
 # Cluster L2/3 neurons using the 1000 DGs
 ## 1. Prepare gene expression data for input to DESC clustering
-Subset expression matrix to 1000 DGs and normalize
+Subset normalized expression matrix to 1000 DGs
 
 Script: highRankedGenes.r
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 
 Input: 
-- DG list: ~/Downloads/RNAseq/cluster_by_genes/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
-- Unnormalized expression file: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/1unnormalized_counts_from_dds.csv
+- DG list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
+- Normalized expression file: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
 
-Output: * need to figure out why the output file differs when using new directory structure 
-- L23_DGmtx.csv: normalized expression matrix consisting of the 1000 DGs 
+Output: 
+- L23_0.3_DGmtx.csv: normalized expression matrix consisting of the 1000 DGs 
 
 ## 2. Run DESC clustering
 ```{r}
-cd ~/Downloads/RNAseq/cluster_by_genes
+cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 mkdir DESC
 ```
 
 Script: DESC_highRankGenes_step1.py
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC
 
 Input: 
-- Normalized expression matrix of the 1000 Dgs: ~/Downloads/RNAseq/cluster_by_genes/L23_DGmtx.csv
+- Normalized expression matrix of the 1000 Dgs: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_DGmtx.csv
 
 Output:
 - clusters.csv: lists each cell barcode and the cluster it is assigned
@@ -350,21 +359,21 @@ Output:
 ## 3. Visualize cluster train/control proportion
 Script: classifier_umap_plot.r
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/figures
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
 
 Input: 
-- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
-- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/DESC/umap.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
+- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap.csv
 
 Output: classifier_umap_tr_ctrl.svg
 
 ### Is there train/control enrichment?
 Script: statistics.r
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/figures
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
 
 Input:
-- Choose an input file at the beginning of script. For this part calculating cluster train/control proportions, use ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+- Choose an input file at the beginning of script. For this part calculating cluster train/control proportions, use ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
 
 Output:
 - cluster_tr_ctrl_prop_hist.svg
@@ -373,16 +382,16 @@ Output:
 # DE analysis of clusters
 ## 1. Run DESeq2, one cluster vs the others
 ```{r}
-cd ~/Downloads/RNAseq/cluster_by_genes/DESC
+cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC
 mkdir DESeq2
 ```
 
 Script: DESeq2_DESC_whole_subclusters.r
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/DESeq2
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2
 
 Input: 
-- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
 
 Output directory: all_cells/
 - unnormalized_counts_from_dds.csv: unnormalized gene expression
@@ -395,7 +404,7 @@ Output directory: all_cells/
 
 Script: DESC-DESeq2-table.r
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC/DESeq2/all_cells
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/all_cells
 
 Input: files ending in *_all_genes.csv
 
@@ -422,8 +431,8 @@ Wd: ~/Downloads/RNAseq/AIBSmapping/AO
 Input:
 - 10X directory of all mice combined: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
 - AIBS dataset. The three files here: ~/Downloads/RNAseq/data/AIBS_data
-- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
-- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/DESC/umap.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
+- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap.csv
 
 Output:
 - prediction_scores.csv: prediction score for the AIBS cells onto the clusters
@@ -449,7 +458,7 @@ Script:
 Wd: 
 
 Input: 
-- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/DESC/clusters.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
 
 Output directory: * (the script makes a separate directory per cluster and then you combine the _all_genes files into a new dir for table script
 - unnormalized_counts_from_dds.csv: unnormalized gene expression
@@ -473,7 +482,7 @@ Output:
 ## 2. Summarize DE results: what IEGs are significant?
 DEGvisuals.r
 
-Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
+Could also use genelist.r to make a table of which IEGs are up or down per cluster (* would have to format a version for manuscript)
 
 
 
