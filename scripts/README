@@ -1,2 +1,3 @@
 # This file details what each script is used for
 DESC_highRankGenes_step1_loop.py and DESC_highRankGenes_step1_loop15.py: loop through combos of DESC parameters using 7 and 15 decimal files, respectively, to see which parameter combo gives best consensus bt 7 and 15 decimal input files
+DESC_DGclustering.py: clustering using subset genelist
