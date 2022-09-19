@@ -52,7 +52,7 @@ save_dir = ''.join(map(str,save_dir))
 
 adata = desc.train(adata, dims=[adata.shape[1], 64, 32], tol=0.001, n_neighbors=n,
                    batch_size=256, louvain_resolution=[res],
-                   save_dir="save_dir", do_tsne=True, learning_rate=300,
+                   save_dir=save_dir, do_tsne=True, learning_rate=300,
                    do_umap=True, num_Cores_tsne=4,
                    save_encoder_weights=True)
 
