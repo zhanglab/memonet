@@ -70,7 +70,6 @@ new_df <- subset(new_df, padj < 0.05)
 write.csv(new_df, "DEGstats_padj0.05.csv", row.names=FALSE)
 
 
-
-
+print("done!")
 
 
