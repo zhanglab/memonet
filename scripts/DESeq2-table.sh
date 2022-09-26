@@ -10,6 +10,4 @@ module load miniconda
 conda activate DESeq2
 
 
-export OMP_NUM_THREADS=1
-
 Rscript /work/pi_yingzhang_uri_edu/kdunton/memonet_github_repo/memonet/scripts/DESeq2-table.r
