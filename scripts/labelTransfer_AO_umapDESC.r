@@ -8,7 +8,6 @@ library(ggplot2)
 library(tidyverse)
 library(Matrix)
 #library(RColorBrewer) #for brewer.pal()
-print(sessionInfo)
 sessionInfo()
 
 options(warn=1)
@@ -27,7 +26,8 @@ dim(mtx)
 
 
 ## prepare metadata- read in the cluster file
-path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n12.L0.85.csv"
+#path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n12.L0.85.csv"
+path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/DESC_parameter_test/loop/clusters_dec22.n24.L0.85.csv"
 print(paste0("input file:", path))
 #print the path to the input file so you know where the analysis data came from
 metadata <- read.csv(path)
@@ -150,9 +150,11 @@ data.reference <- RunPCA(data.reference, npcs = 30, verbose = FALSE)
 
 ### in replacement of RunUMAP:
 ## load DESC umap data
-umap <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap_n12.L0.85.csv")
+#umap <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap_n12.L0.85.csv")
+umap <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/DESC_parameter_test/loop/umap_dec22.n24.L0.85.csv")
 #load cluster data in order to get the barcodes for the umap coordinates
-clusters <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n12.L0.85.csv")
+#clusters <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n12.L0.85.csv")
+clusters <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/DESC_parameter_test/loop/clusters_dec22.n24.L0.85.csv")
 #the umap file is indexed based on the ordering of the clusters file, so just add the barcode column of the clusters file to the umap file
 umap$barcode <- clusters$X
 umap$X <- NULL

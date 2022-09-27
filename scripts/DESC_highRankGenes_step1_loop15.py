@@ -15,8 +15,8 @@ sc.logging.print_versions()
 
 
 ######## set parameters to loop through ########
-n_neighbors = [8,9,10,11,12,13,14,15,18,19,20,21,22,23,24,25]
-#n_neighbors = [21,22,23,24,25]
+#n_neighbors = [8,9,10,11,12,13,14,15,18,19,20,21,22,23,24,25]
+n_neighbors = [19,20,21,22,23,24,25]
 n_neighbors = np.array(n_neighbors)
 louvain_resolution = [0.7,0.75,0.8,0.85,0.9]
 louvain_resolution = np.array(louvain_resolution)
