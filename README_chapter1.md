@@ -213,7 +213,7 @@ cd DESeq2
 mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl
 ```
 
-Script: DESeq2_DESC_B-L23aibs.r
+Script: DESeq2_tr_vs_ctrl.r
 
 **DE analysis of glutamatergic neurons:**
 
@@ -221,7 +221,7 @@ Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
 
-Output directory: all_cells_combined/
+Output:
 - 1unnormalized_counts_from_dds.csv: unnormalized gene expression
 - 1normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
 - 1normalized_counts_from_dds.csv: normalized gene expression
@@ -234,7 +234,7 @@ Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
 
-Output directory: all_cells_combined/
+Output:
 - 1unnormalized_counts_from_dds.csv: unnormalized gene expression
 - 1normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
 - 1normalized_counts_from_dds.csv: normalized gene expression
@@ -250,17 +250,17 @@ Could also use genelist.r to make a table of which IEGs are up or down per cluss
 # DE analysis for L2/3 neurons
 ```{r}
 cd ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2
-mkdir L23
+mkdir L23_0.3_tr_vs_ctrl
 ```
 
 ## 1. Run DESeq2: train vs control
-Script: DESeq2_DESC_B-L23aibs.r
+Script: DESeq2_tr_vs_ctrl.r
 
-Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl
 
-Input: L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.2.csv
+Input: L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.3.csv
 
-Output directory: all_cells_combined/
+Output:
 - 1unnormalized_counts_from_dds.csv: unnormalized gene expression
 - 1normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
 - 1normalized_counts_from_dds.csv: normalized gene expression
