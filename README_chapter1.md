@@ -17,6 +17,7 @@ mkdir memonet_data AIBS_data
 cd ~/Downloads/RNAseq
 mkdir memonet_github_repo
 cd memonet_github_repo
+git clone git@github.com:zhanglab/memonet.git
 ```
 
 You can find scripts here: ~/Downloads/RNAseq/memonet_github_repo/memonet/scripts
