@@ -334,20 +334,22 @@ Output:
 
 Now that we've confirmed the 1000 DGs do enrich for learning-related functions, we can cluster our L2/3 neurons using these genes.
 
-# Cluster L2/3 neurons using the 1000 DGs
-## 1. Prepare gene expression data for input to DESC clustering
-Subset normalized expression matrix to 1000 DGs
+# Cluster L2/3 neurons using DGs
+## 1. Normalize counts
+Script: DESCnormalization.r
 
-Script: highRankedGenes.r
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
+Input:
+- memonet data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
 
-Input: 
-- DG list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/Updated_TopGenesAccordingtoLDA_trVsCtrl.csv
-- Normalized expression file: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
-
-Output: 
-- L23_0.3_DGmtx.csv: normalized expression matrix consisting of the 1000 DGs 
+Output:
+- ~/Downloads/RNAseq/QC/cells_after_QC.csv: list of cells remaining after QC steps on whole dataset
+- ~/Downloads/RNAseq/QC/genes_after_QC.csv: list of genes remaining after QC steps
+- ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv: unnormalized counts of L2/3 cells, 0.3 cutoff
+- ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv: normalized counts of L2/3 cells, 0.3 cutoff
+- ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs9.10.22.csv: list of cells and mouse ID, for reference during classifier training
+- ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs9.10.22_transpose.csv: same as above but the transposed version. Not sure which one Nathan used
 
 ## 2. Run DESC clustering
 ```{r}
