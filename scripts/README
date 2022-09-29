@@ -1,8 +1,20 @@
 # This file details what each script is used for
-DESC_highRankGenes_step1_loop.py and DESC_highRankGenes_step1_loop15.py: loop through combos of DESC parameters using 7 and 15 decimal files, respectively, to see which parameter combo gives best consensus bt 7 and 15 decimal input files
+
+# Scripts in order of use: (RStudio denotes I used on laptop instead of server)
+DESCnormalization: normalize L2/3 counts
+DESC_inputFormat.r: RStudio script; subset normalized counts to DGs
 DESC_DGclustering.py: clustering using DG-subset genelist
+
 DESeq2_tr_vs_ctrl.r: DE analysis of all glut,GABA, or L2/3 cells
-DESeq2_whole_subclusters.r: DE analysis of one cluster vs others. Does this in a loop.
-DESeq2_clusterX_vs_clusterY_whole_loop.r: DE analysis of one cluster vs a specified ref cluster. It goes through all in a loop.
+DESeq2_whole_subclusters.r: DE analysis of one cluster vs others
+DESeq2_clusterX_vs_clusterY_whole.r: DE analysis of one cluster vs a specified ref cluster
 DESeq2-table.r: combine DE results into one file
 labelTransfer_AO_umapDESC.r: map AIBS L2/3 cells onto our clusters; on unity, it errors at the MapQuery step and doesn't produce the umap images, but all we need is the prediction_scores.csv file for now
+
+
+
+# Unordered scripts, used for generating data for collaborators, testing stuff, etc:
+DESC_highRankGenes_step1_loop.py and DESC_highRankGenes_step1_loop15.py: loop through combos of DESC parameters using 7 and 15/22 decimal files, respectively, to see which parameter combo gives best consensus bt 7 and 15 decimal input files
+AvgGeneExp.r: calculate avg gene expression per gene per cluster, for EJ
+
+
