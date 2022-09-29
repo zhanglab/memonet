@@ -368,12 +368,12 @@ cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 mkdir DESC
 ```
 
-Script: DESC_highRankGenes_step1.py
+Script: DESC_DGclustering.py
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC
 
 Input: 
-- Normalized expression matrix of the 1000 Dgs: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_DGmtx.csv
+- Normalized expression matrix, subset to DGs: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_DGmtx.csv
 
 Output:
 - clusters.csv: lists each cell barcode and the cluster it is assigned
@@ -383,7 +383,7 @@ Output:
 - figures/
    - umap0.8desc_0.8.png: visual of cluster umap projection 
 
-## 3. Visualize cluster train/control proportion
+## 4. Visualize cluster train/control proportion
 Script: classifier_umap_plot.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
@@ -413,7 +413,7 @@ cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC
 mkdir DESeq2
 ```
 
-Script: DESeq2_DESC_whole_subclusters.r
+Script: DESeq2_whole_subclusters.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2
 
@@ -424,12 +424,12 @@ Output directory: all_cells/
 - unnormalized_counts_from_dds.csv: unnormalized gene expression
 - normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
 - normalized_counts_from_dds.csv: normalized gene expression
-- x_vs_others_all_genes.csv: DESeq2 results for all genes
-- x_vs_others_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+- *_vs_others_all_genes.csv: DESeq2 results for all genes
+- *_vs_others_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
 **Combine cluster result files into one file:** 
 
-Script: DESC-DESeq2-table.r
+Script: DESeq2-table.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/all_cells
 
@@ -448,7 +448,7 @@ Could also use genelist.r to make a table of which IEGs are up or down per cluss
 ```{r}
 cd ~/Downloads/RNAseq/AIBSmapping
 mkdir AO
-  # 'AO' stands for AIBS onto Our cells
+  # 'AO' stands for AIBS onto Our (memonet) cells
 ```
 
 Script: labelTransfer_AO_umapDESC.r
@@ -456,7 +456,7 @@ Script: labelTransfer_AO_umapDESC.r
 Wd: ~/Downloads/RNAseq/AIBSmapping/AO
 
 Input:
-- 10X directory of all mice combined: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+- Memonet data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
 - AIBS dataset. The three files here: ~/Downloads/RNAseq/data/AIBS_data
 - Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
 - Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap.csv
