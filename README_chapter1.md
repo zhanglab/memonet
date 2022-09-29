@@ -5,12 +5,22 @@ This file details all steps of the analysis for Chapter 1, including scripts and
 ```{r} 
 cd ~/Downloads
 mkdir RNAseq
-  # this will be the overarching directory
+  # this will be the project directory
 cd RNAseq
 mkdir data
 cd data
 mkdir memonet_data AIBS_data
 ```
+
+## Clone repo
+```{r} 
+cd ~/Downloads/RNAseq
+mkdir memonet_github_repo
+cd memonet_github_repo
+```
+
+You can find scripts here: ~/Downloads/RNAseq/memonet_github_repo/memonet/scripts
+
 
 ## Download Packages 
 Cell Ranger
@@ -19,6 +29,10 @@ Cell Ranger
 Seurat *
 
 DESC *
+
+DESeq2 *
+
+EnrichR *
 
 
 ## Download datasets
@@ -37,10 +51,10 @@ AIBS dataset:
 - Download to: ~/Downloads/RNAseq/data/AIBS_data
 - Rename the files to: aibs_barcodes.tsv, aibs_genes.tsv, aibs_matrix.mtx
 
-# Pre-processing
-## Aggregate the data of all mice
-Use the aggr command to combine the data of all mice
-- Wd: RNAseq/data/memonet_data
+# Pre-processing of memonet data
+## Aggregate the data of all mice using Cell Ranger commands
+Use Cell Ranger's aggr command to combine the data of all mice:
+- Wd: ~/Downloads/RNAseq/data/memonet_data
 - Generate a libraries.csv file with the locations of each mouse's data, in the following format: 
 ![](embedded_images/libraries.csv.png)
   - the order of rows determines the suffix attached to the barcodes of each mouse (in order to differentiate which mouse is which in the combined file), ie mouse 262 will have -1, 263 -2, etc
