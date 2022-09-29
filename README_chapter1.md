@@ -472,17 +472,19 @@ Script: labelTransfer_AO_stats.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/AO
 
-Input: *
+Input: *  ~/Downloads/RNAseq/AIBSmapping/AO/_/prediction_scores.csv
 
 Output: *
+- pie chart
+- summary table
 
-Since almost half of AIBS cells are assigned to C4, we would like to assume C4 as the baseline condition and run another DE analysis of each cluster in reference to C4.
+Since C_ receives the most AIBS cell assignments, we would like to assume C_ as the baseline condition and run another DE analysis of each cluster in reference to C_.
 
 # DE analysis of clusters
-## 1. Run DESeq2, one cluster vs C4
-Script: 
+## 1. Run DESeq2, one cluster vs baseline
+Script: DESeq2_clusterX_vs_clusterY_whole.r
 
-Wd: 
+Wd: *  /work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/
 
 Input: 
 - Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
@@ -496,9 +498,9 @@ Output directory: * (the script makes a separate directory per cluster and then 
 
 **Combine cluster result files into one file:** 
 
-Script: DESC-DESeq2-table.r
+Script: DESeq2-table.r
 
-Wd: 
+Wd: *
 
 Input: files ending in *_all_genes.csv
 
