@@ -344,14 +344,25 @@ Input:
 - memonet data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
 
 Output:
-- ~/Downloads/RNAseq/QC/cells_after_QC.csv: list of cells remaining after QC steps on whole dataset
+- ~/Downloads/RNAseq/QC/cells_after_QC.csv: list of cells remaining after QC steps on whole dataset. Needed for DESeq2 of clusters
 - ~/Downloads/RNAseq/QC/genes_after_QC.csv: list of genes remaining after QC steps
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv: unnormalized counts of L2/3 cells, 0.3 cutoff
-- ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv: normalized counts of L2/3 cells, 0.3 cutoff
+- ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv: normalized counts of L2/3 cells, 0.3 cutoff. This will be used as input for classifier training
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs9.10.22.csv: list of cells and mouse ID, for reference during classifier training
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs9.10.22_transpose.csv: same as above but the transposed version. Not sure which one Nathan used
 
-## 2. Run DESC clustering
+## 2. Subset to DGs 
+Script: DESC_inputFormat.r
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
+
+Input:
+- DG list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending.csv
+- L2/3 normalized counts: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
+
+Output: L23_0.3_DGmtx.csv
+
+## 3. Run DESC clustering
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 mkdir DESC
