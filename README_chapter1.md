@@ -189,7 +189,7 @@ Wd: ~/Downloads/RNAseq/AIBSmapping/OA/
 
 Input: 
 - Choose an input file at the beginning of script. For this part calculating L2/3 proportions, use ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
-- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.2.csv
+- L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.3.csv
 
 Output:
 - L23subclass_tr_ctrl_prop_hist.png
