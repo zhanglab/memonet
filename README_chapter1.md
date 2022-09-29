@@ -77,15 +77,13 @@ cd ~/Downloads/RNAseq
 mkdir QC
 ```
 
-Script: /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/QCthresholds.r 
-- Choose cutoffs based on the plots with no cutoff, then update code to use those cutoffs and visualize the remaining dataset
-
-Usage: sbatch /data/zhanglab/kdunton/neuron_model/katie-scripts/RNAseq/scripts_unorganized/QCthresholds.sh
+Script: ~/Downloads/RNAseq/memonet_github_repo/memonet/scripts/QCthresholds.r 
+- Thresholds were chosen based on violin plots of the data before QC
 
 Wd: ~/Downloads/RNAseq/QC
 
 Input: 
-- Data directory for each mouse, ie ~/Downloads/RNAseq/data/memonet_data/slPsiwmg_JB_262_1_2_3/filtered_feature_bc_matrix/
+- Data directory for each mouse, ie ~/Downloads/RNAseq/data/memonet_data/data_download/slPsiwmg_JB_262_1_2_3/filtered_feature_bc_matrix/
 
 Output:
 - ctrl_without_cutoff.png: violin plots of the 3 control mice before QC
@@ -100,16 +98,16 @@ cd ~/Downloads/RNAseq
 mkdir AIBSmapping
 cd AIBSmapping
 mkdir OA test
-  # 'OA' refers to Our data mapped to AIBS data
+  # 'OA' refers to Our (memonet) data mapped to AIBS data
 cd OA
 mkdir barcode_files count_matrices 
 ```
 
-Script: pairwiseOA_clean.r
+Script: ~/Downloads/RNAseq/memonet_github_repo/memonet/scripts/pairwiseOA_clean.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA
 
-Query: our data
+Query: memonet data
 Reference: AIBS data
 
 Input: 
@@ -118,8 +116,8 @@ Input:
 
 Output: 
 - prediction_scores.csv: lists each cell, the predicted cell type label, and prediction scores for each cell type
-- umap_referenceOA-celltypes.png: umap of the reference (AIBS) with cell type labels
-- umap_OA_query-predictedLabels.png: umap of the query (our data) projected onto AIBS space, labeled with the predicted labels
+- umap_referenceOA-celltypes.png: umap of the reference (AIBS data) with cell type labels
+- umap_OA_query-predictedLabels.png: umap of the query (memonet data) projected onto AIBS space, labeled with the predicted labels
 
 ## Test the accuracy of mapping on AIBS data
 ### 1. Generate a test dataset (downsample to 25% of each cell type; remove sample cells from rest of reference) and perform label transfer from the remaining 75% of data. Do this 100 times.
@@ -162,12 +160,13 @@ Output:
 - AIBStest_confusionMtx.png: heatmap of original cell type labels vs predicted labels for AIBS testing
 - maxPredictionScores-AIBStest_and_OA.csv: table of mean and median prediction.score.max for AIBS testing and OA mapping; shows calculation for all celltypes and subset for L2/3 cells
 
-## Choose L2/3 cutoff score of 0.2
+## Choose L2/3 cutoff score of 0.3
 Script: prediction_score_cutoff_barcodes.r
+- This script generates a barcode list for various prediction score cutoff values. We chose a cutoff value of 0.3, meaning any cell that was predicted to be L2/3 and has a sum of prediction scores for L2/3 IT_1, L2/3 IT_2, L2/3 IT_3 <= 0.3 will not be included in downstream analysis.
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
 
-Output: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.2.csv
+Output: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.3.csv
 
 # Investigate cell type proportions
 
