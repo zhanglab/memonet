@@ -22,6 +22,7 @@ labelTransfer_AO_umapDESC.r: map AIBS L2/3 cells onto our clusters; on unity, it
 
 
 # Unordered scripts, used for generating data for collaborators, testing stuff, etc:
+download.sh: download memonet 10X data from server. The download method will change once data is submitted to GEO or elsewhere though
 DESC_highRankGenes_step1_loop.py and DESC_highRankGenes_step1_loop15.py: loop through combos of DESC parameters using 7 and 15/22 decimal files, respectively, to see which parameter combo gives best consensus bt 7 and 15 decimal input files
 AvgGeneExp.r: calculate avg gene expression per gene per cluster, for EJ
 DESeq2_clusterX_vs_clusterY1and2.r: DE analysis of one cluster vs two specified reference clusters (used for n24.L0.7)
