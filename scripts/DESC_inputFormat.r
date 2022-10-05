@@ -14,7 +14,7 @@ library(Seurat)
 ########### read in genelist to subset dataset to ########### 
 
 ### read in DG list ###
-genelist <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending.csv", header=FALSE) 
+genelist <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv", header=FALSE) 
 genelist <- na.omit(genelist)
 # we want to subset to top 3000
 genelist <- genelist[1:3000,]
