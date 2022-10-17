@@ -197,9 +197,10 @@ for(file in filenames){
   
   
   ## plot ref using DESC umap- should look the same as DESC plot
-  bitmap(paste0(outfile,"_umap_classifierRef.png"), width = 13, height = 11, units = 'in', res = 300)
+  #bitmap(paste0(outfile,"_umap_classifierRef.png"), width = 13, height = 11, units = 'in', res = 300)
   DimPlot(data.reference, reduction = "umap.desc", group.by = "cluster_ID", label = TRUE, label.color='black',repel = TRUE) #+ NoLegend()
-  dev.off()
+  ggsave(filename = paste0(outfile,"_umap_classifierRef.png"), dpi = 300, type = "cairo")
+  #dev.off()
   
   
   
@@ -232,10 +233,11 @@ for(file in filenames){
   
   
   ## color umap by predicted label
-  bitmap(paste0(outfile,"umap_aibsL23_colored_by_cluster.png"), width = 13, height = 11, units = 'in', res = 300)
+  #bitmap(paste0(outfile,"umap_aibsL23_colored_by_cluster.png"), width = 13, height = 11, units = 'in', res = 300)
   DimPlot(data.query, reduction = "ref.umap", group.by = "predicted.celltype", label = TRUE,
           label.size = 3, label.color='black', repel = TRUE) + ggtitle("Query transferred labels") #+ NoLegend()
-  dev.off()
+  ggsave(filename = paste0(outfile,"umap_aibsL23_colored_by_cluster.png"), dpi = 300, type = "cairo") 
+  #dev.off()
 
 }
 
