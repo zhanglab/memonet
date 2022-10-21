@@ -7,6 +7,6 @@
 # usage: andromeda
 #        sbatch /home/kdunton/git/memonet/scripts/checksum.sh
 
-module load scCATCH/3.1-foss-2021b-R-4.2.0 
+module load scCATCH/2.1-foss-2020b-R-4.0.3 
 
 Rscript /home/kdunton/git/memonet/scripts/checksum.r

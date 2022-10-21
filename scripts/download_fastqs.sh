@@ -11,3 +11,4 @@ wget --no-check-certificate -nH -np -r https://epigenomics.sdsc.edu/jbuchanan/Ko
   #--no-check-certificate: don't validate the site certificate
   #-np: don't ascend to parent directory
   #-nH don't make host directory (no idea what that means but Jing used it for the cellranger download)
+echo "done"
