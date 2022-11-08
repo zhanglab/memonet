@@ -191,8 +191,10 @@ data.reference[["umap.desc"]]@misc$model <- umap.desc.model
 
 
 ## plot ref using DESC umap- should look the same as DESC plot
-bitmap("umap_clusterRef.png", width = 13, height = 11, units = 'in', res = 300)
-DimPlot(data.reference, reduction = "umap.desc", group.by = "cluster_ID", label = TRUE, label.color='black',repel = TRUE) #+ NoLegend()
+bitmap("umap_clusterRef.png", width = 14, height = 11, units = 'in', res = 300)
+DimPlot(data.reference, reduction = "umap.desc", group.by = "cluster_ID", label = TRUE, label.color='black',repel = TRUE) +
+	ggtitle("MEMONET L2/3 dataset") + labs(x = "UMAP_1", y = "UMAP_2")
+ggsave(filename="umap_clusterRef.svg",width = 14, height = 11)
 dev.off()
 
 
@@ -234,9 +236,10 @@ metadata <- data.query@meta.data
 #colors <- c('brown1','darkgoldenrod1','darkkhaki','chartreuse2','darkturquoise','deepskyblue','cornflowerblue','darkorchid','darkgray')
 #colors <- c('brown1','darkgoldenrod1','darkkhaki','chartreuse2','darkturquoise','deepskyblue','cornflowerblue','darkgray')#,'darkorchid','darkgray')
 
-bitmap("umap_aibsL23_colored_by_cluster.png", width = 13, height = 11, units = 'in', res = 300)
-DimPlot(data.query, reduction = "ref.umap", group.by = "predicted.celltype", label = TRUE,
-              label.size = 3, label.color='black', repel = TRUE) + ggtitle("Predicted cluster labels") #+ NoLegend(), cols=colors
+bitmap("umap_aibsL23_colored_by_cluster.png", width = 14, height = 11, units = 'in', res = 300)
+DimPlot(data.query, reduction = "ref.umap", group.by = "predicted.celltype") + #+ NoLegend(), cols=colors +
+        ggtitle("AIBS L2/3 dataset") + labs(x = "UMAP_1",y = "UMAP_2") 
+ggsave(filename="umap_aibsL23_colored_by_cluster.svg",width = 14, height = 11)
 dev.off()
 
 ## color umap by aibs L2/3 subclasses
