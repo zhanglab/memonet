@@ -1,0 +1,6 @@
+This folder contains Supplemental Data files.
+-Supplementary Data 1: Single-cell reference mapping results. 
+  Tab "OA" contains results of mapping our MEMONET dataset onto the AIBS dataset. 
+  Tab "AO_L23" contains results of mapping AIBS L2/3 neurons onto the MEMONET L2/3 clusters.
+-Supplementary Data 2: Differential Expression (DE) results.
+-Supplementary Data 3: Gene Ontology (GO) enrichment results.
