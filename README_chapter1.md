@@ -42,7 +42,7 @@ cd ~/Downloads/RNAseq/memonet_data
 mkdir data_download
 ```
 
-Memonet dataset:
+MEMONET dataset:
 - Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 (* will need to change this to the ncbi repository number once we upload data there)
 - Script for downloading: /data/zhanglab/jingwang/brain/RNAseq/Takaki/Deep/download.sh
 - Download to: ~/Downloads/RNAseq/data/memonet_data/data_download
@@ -93,13 +93,13 @@ Output:
 - QC_train.png
 
 
-# Map our data onto AIBS dataset ("OA mapping")
+# Map MEMONET data onto AIBS dataset ("OA mapping")
 ```{r}
 cd ~/Downloads/RNAseq
 mkdir AIBSmapping
 cd AIBSmapping
 mkdir OA test
-  # 'OA' refers to Our (memonet) data mapped to AIBS data
+  # 'OA' refers to Our (MEMONET) data mapped to AIBS data
 cd OA
 mkdir barcode_files count_matrices 
 ```
@@ -108,7 +108,7 @@ Script: ~/Downloads/RNAseq/memonet_github_repo/memonet/scripts/pairwiseOA_clean.
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA
 
-Query: memonet data
+Query: MEMONET data
 Reference: AIBS data
 
 Input: 
@@ -118,7 +118,7 @@ Input:
 Output: 
 - prediction_scores.csv: lists each cell, the predicted cell type label, and prediction scores for each cell type
 - umap_referenceOA-celltypes.png: umap of the reference (AIBS data) with cell type labels
-- umap_OA_query-predictedLabels.png: umap of the query (memonet data) projected onto AIBS space, labeled with the predicted labels
+- umap_OA_query-predictedLabels.png: umap of the query (MEMONET data) projected onto AIBS space, labeled with the predicted labels
 
 ## Test the accuracy of mapping on AIBS data
 ### 1. Generate a test dataset (downsample to 25% of each cell type; remove sample cells from rest of reference) and perform label transfer from the remaining 75% of data. Do this 100 times.
@@ -177,11 +177,11 @@ Functions:
 - calculate cell subclass proportion (neurons and glia)
 - calculate inhibitory neuron percentage
 - calculate neuron subclass proportion (neurons only)
-- plot neuron subclass proportion, comparing our dataset and AIBS
+- plot neuron subclass proportion, comparing MEMONET dataset and AIBS
 
 Input:
 - AIBS metadata: ~/Downloads/RNAseq/data/AIBS_data/aibs_barcodes.tsv
-- cell type predictions for our data: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
+- cell type predictions for MEMONET data: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
 
 ## L2/3 subtypes: Is there train/control enrichment?
 Script: statistics.r
@@ -243,9 +243,9 @@ Output:
 - 1_train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
 ## 3. Summarize DE results: what IEGs are significant?
-DEGvisuals.r
+DEGvisuals.r (* update with heatmaps and lineplots)
 
-Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
+Could also use genelist.r to make a table of which IEGs are up or down per cluster (* would have to format a version for manuscript)
 
 
 # DE analysis for L2/3 neurons
@@ -273,8 +273,8 @@ DEGvisuals.r
 
 Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
 
-## 3. How many DEGs overlap with the 1000 discriminating genes (DG) used for clustering?
-### a. Download DG list
+## 3. How many DEGs overlap with the 3000 experience-dependent genes (EDGs) used for clustering?
+### a. Download EDG list
 ```{r}
 cd ~/Downloads/RNAseq/
 mkdir cluster_by_genes
@@ -293,8 +293,8 @@ Input:
 
 
 
-# GO analysis of the 1000 DGs
-Before continuing with the analysis, we want to check whether the 1000 DGs are actually related to learning.
+# GO analysis of the 3000 EDGs
+Before continuing with the analysis, we want to check whether the 3000 EDGs are actually related to learning.
 ## To run GO, you first need to generate a background gene list: this is all genes in the L2/3 dataset that are input to DESeq2
 Script: background_genes-enrichment.r
 
@@ -316,7 +316,6 @@ mkdir GO
 ```
 
 Script: Figures.r part “ GO analysis of classifier gene list”
-- edit the 'comparison' variable to 'all', 'pos', 'neg' to run GO on all 1000, 500 pos, 500 neg, respectively
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO
 
@@ -325,16 +324,13 @@ Input:
 - Background gene list: ~/Downloads/RNAseq/AIBSmapping/OA/background_genes-enrichment0.2.csv
 
 Output: 
-- DiscriminantGenesGO_all.csv: GO results for the 1000 DGs
+- DiscriminantGenesGO_all.csv: GO results for the 1000 DGs (*update names)
 - DiscriminantGenesGO_all.png: treeplot showing GO results for the 1000 DGs
-- DiscriminantGenesGO_pos.csv: GO results for the 500 positive DGs
-- DiscriminantGenesGO_pos.png: treeplot showing GO results for the positive DGs
-- DiscriminantGenesGO_neg.csv: GO results for the 500 negative DGs
-- DiscriminantGenesGO_neg.png: treeplot showing GO results for the negative DGs
 
-Now that we've confirmed the 1000 DGs do enrich for learning-related functions, we can cluster our L2/3 neurons using these genes.
 
-# Cluster L2/3 neurons using DGs
+Now that we've confirmed the EDGs do enrich for learning-related functions, we can cluster our L2/3 neurons using these genes.
+
+# Cluster L2/3 neurons using EDGs
 ## 1. Normalize counts
 Script: DESCnormalization.r
 
@@ -351,13 +347,13 @@ Output:
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs9.10.22.csv: list of cells and mouse ID, for reference during classifier training
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs9.10.22_transpose.csv: same as above but the transposed version. Not sure which one Nathan used
 
-## 2. Subset to DGs 
+## 2. Subset to EDGs 
 Script: DESC_inputFormat.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 
 Input:
-- DG list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending.csv
+- EDG list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending.csv (*changed)
 - L2/3 normalized counts: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
 
 Output: L23_0.3_DGmtx.csv

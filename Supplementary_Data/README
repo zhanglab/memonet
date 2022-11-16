@@ -1,0 +1,14 @@
+This folder contains Supplementary Data files.
+-Supplementary Data 1: Single-cell reference mapping results. 
+  Tab "OA" contains results of mapping our MEMONET dataset onto the AIBS dataset. 
+  Tab "AO_L23" contains results of mapping AIBS L2/3 neurons onto the MEMONET L2/3 clusters.
+-Supplementary Data 2: Differential Expression (DE) results.
+  Tab "AIBS-definedGABA": Results for all GABAergic neurons as defined by single-cell reference mapping to the AIBS dataset. DE comparison: train vs control
+  Tab "AIBS-definedGlut": Results for all glutamatergic neurons as defined by single-cell reference mapping to the AIBS dataset. DE comparison: train vs control
+  Tab "AIBS-definedL23": Results for L2/3 neurons as defined by single-cell reference mapping to the AIBS dataset; filtered out cells with prediction scores < 0.3. DE comparison: train vs control
+  Tab "L23_clusters_refOthers": DE results of the L2/3 clusters. DE compaarison: one cluster vs the others
+  Tab "L23_clusters_ref0": DE results of the L2/3 clusters. DE compaarison: one cluster vs cluster 0
+-Supplementary Data 3: Gene Ontology (GO) enrichment results.
+  Tab "EDGs": Results for the 3000 experience-dependent genes identified by the logistic classifier.
+  Tab "x_vs_0_upreg": Results for the L2/3 clusters. The gene list used as input to GO analysis was the upregulated DEGs from DE analysis of each cluster vs cluster 0.
+  Tab "x_vs_0_downreg": Results for the L2/3 clusters. The gene list used as input to GO analysis was the downregulated DEGs from DE analysis of each cluster vs cluster 0.
