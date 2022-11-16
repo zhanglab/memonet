@@ -117,8 +117,8 @@ Input:
 
 Output: 
 - prediction_scores.csv: lists each cell, the predicted cell type label, and prediction scores for each cell type
-- umap_referenceOA-celltypes.png: umap of the reference (AIBS data) with cell type labels
-- umap_OA_query-predictedLabels.png: umap of the query (MEMONET data) projected onto AIBS space, labeled with the predicted labels
+- umap_referenceAIBS.png: umap of the reference (AIBS data) with cell type labels
+- umap_queryMEMONET.png: umap of the query (MEMONET data) projected onto AIBS space, labeled with the predicted labels
 
 ## Test the accuracy of mapping on AIBS data
 ### 1. Generate a test dataset (downsample to 25% of each cell type; remove sample cells from rest of reference) and perform label transfer from the remaining 75% of data. Do this 100 times.
