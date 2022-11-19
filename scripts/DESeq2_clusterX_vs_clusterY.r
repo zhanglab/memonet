@@ -33,9 +33,9 @@ dim(mtx)
 
 ######## format metadata ########
 #path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n12.L0.85.csv"
-path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/DESC_parameter_test/loop/clusters_dec22.n24.L0.85.csv"
+path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv"
 # specify reference cluster
-ref <- '2'
+ref <- '0'
 
 print(paste0("input file:", path))
 #print the path to the input file so you know where the analysis data came from
