@@ -336,6 +336,8 @@ Script: DESCnormalization.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices
 
+Set 'cutoff' variable to '0.3'
+
 Input:
 - memonet data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
 
