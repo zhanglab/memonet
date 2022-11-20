@@ -1,11 +1,10 @@
-# this script runs DESeq2 on DESC subclustering for one cluster, using control and train cells
+# this script runs DESeq2 on clusters: one cluster vs the others
 # it loops through all clusters
-# it finds DE genes between one subcluster and all other subclusters
-# for this, you want the input to be the counts matrix with genes in rows and cells in columns
+# it finds DE genes between one cluster and all other clusters
 
 
-#library(scater) #don't think this is necessary bc not using DESeq's default QC
-#library(Seurat)  #I don't think this is necessary since not using seurat obj
+#library(scater) 
+#library(Seurat) 
 library(tidyverse)
 #library(cowplot)
 #library(Matrix.utils)
@@ -24,13 +23,13 @@ library(png)
 library(DESeq2)
 #library(RColorBrewer)
 
-#for running in parallel (since we're using all the cells as samples rather than the aggregation of all cells in a mouse per cluster like the original DESeq2_DESC script does):
+#for running in parallel 
 library("BiocParallel")
 #register(MulticoreParam(10))
 
 
 ####### load MEX into R ########
-mat <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv", check.names=FALSE)
+mat <- read.csv("~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv", check.names=FALSE)
 rownames(mat) <- mat[,1]
 mat[,1] <- NULL
 mtx <- as.matrix(mat)
@@ -40,8 +39,7 @@ dim(mtx)
 
 
 ######## format metadata ########
-#path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n24.L0.7.csv"
-path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv"
+path <- "~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv"
 print(paste0("input file:", path))
 #print the path to the input file so you know where the analysis data came from
 clusters <- read.csv(path)
@@ -76,12 +74,12 @@ dir.create("all_cells")
 IDs <- levels(as_factor(clusters$cluster_label))
 
 print("starting loop")
-for(subcluster in IDs){
-  print(paste0("subcluster ", subcluster))
+for(cluster in IDs){
+  print(paste0("cluster ", cluster))
 
   ## add column to differentiate the cluster of interest from all others, since you want to find DE between a whole cluster and all others
-  metadata <- clusters %>% mutate(comparison = case_when(cluster_label == subcluster ~ "compare",
-                                                         cluster_label != subcluster ~ "others"))
+  metadata <- clusters %>% mutate(comparison = case_when(cluster_label == cluster ~ "compare",
+                                                         cluster_label != cluster ~ "others"))
 
 
   # no need to subset counts matrix since it's the unnormalized L2/3 file 
@@ -94,9 +92,8 @@ for(subcluster in IDs){
     #assign the first column (barcodes) to be rownames
   metadata[,1] <- NULL
     #then remove the barcodes column
-  print(metadata[1:49,])
+  print(metadata[1:40,])
     #this shows that the rownames have indeed become the cell barcodes
-    #printing 49 lines to show all the clusters to double check which cluster the script is evaluating
 
   #check that the cells are in the same order bt count matrix and metadata
   print(all(rownames(metadata) == colnames(counts)))
@@ -168,7 +165,7 @@ for(subcluster in IDs){
     as_tibble()
 
   write.csv(res_tbl,
-            paste0("all_cells/", subcluster, "_vs_", "others", "_all_genes.csv"),
+            paste0("all_cells/", cluster, "_vs_", "others", "_all_genes.csv"),
             quote = FALSE,
             row.names = FALSE)
 
@@ -177,7 +174,7 @@ for(subcluster in IDs){
     dplyr::arrange(padj)
 
   write.csv(sig_res,
-            paste0("all_cells/", subcluster, "_vs_", "others", "_sig_genes.csv"),
+            paste0("all_cells/", cluster, "_vs_", "others", "_sig_genes.csv"),
             quote = FALSE,
             row.names = FALSE)
 
