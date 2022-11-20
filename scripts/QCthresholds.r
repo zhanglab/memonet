@@ -36,7 +36,7 @@ train = merge(M263, y = c(M277,M279), add.cell.ids = c("T1", "T2", "T3"), projec
 train$stim <- "TRAIN"
 
 
-##### calculate mitochondiral gene ratio#####
+##### calculate mitochondiral gene ratio #####
 ctrl[["percent.mt"]] <- PercentageFeatureSet(ctrl, pattern = "^mt-")
 train[["percent.mt"]] <- PercentageFeatureSet(train, pattern = "^mt-")
 
