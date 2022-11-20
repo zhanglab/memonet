@@ -1,4 +1,4 @@
-# this script is for running DESC on classifier genes only
+# this script is for running DESC using only a subset of genes (the 3000 EDGs)
 
 
 import desc as desc
@@ -15,7 +15,7 @@ sc.logging.print_versions()
 
 
 ######### load andata #########
-path = '/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_DGmtx.csv'
+path = '~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_EDGmtx.csv'
 print("Path:"+ str(path))
 adata = sc.read(path)
   #this reads a counts matrix into anndata object; requires cells in rownames and genes in columns
@@ -40,10 +40,10 @@ desc.scale(adata, zero_center=True, max_value=3)
 
 ######### run DESC #########
 ## set parameters
-n = 12
+n = 25
 print("n_neighbors:")
 print(n)
-res = 0.85
+res = 0.65
 print("louvain_resolution:")
 print(res)
 
