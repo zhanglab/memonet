@@ -127,16 +127,17 @@ data.reference <- ScaleData(data.reference, verbose = FALSE)
 data.reference <- RunPCA(data.reference, npcs = 30, verbose = FALSE)
 data.reference <- RunUMAP(data.reference, reduction = "pca", dims = 1:30, verbose = FALSE)
 
+#original version with cluster_label labels on the umap space:
 #bitmap("umap_referenceOA-celltypes.png", width = 14, height = 11, units = 'in', res = 300)
 #DimPlot(data.reference, reduction = "umap", group.by = "cluster_label", label = TRUE, label.color='black',repel = TRUE, label.size = 5) + NoLegend() + ggtitle("AIBS dataset") + 
 #  theme(axis.text = element_text(size = 15)) + theme(axis.title = element_text(size = 20)) + theme(plot.title = element_text(size = 20)) 
+#ggsave(filename="umap_referenceOA-celltypes.svg",width = 14, height = 11)
 
-# version with legend instead of labels on the umap space:
+# version with legend instead of labels on the umap space, and using subclass_label instead for broader labels:
 bitmap("umap_AIBS_subclassLabelLegend.png", width = 14, height = 11, units = 'in', res = 300)
 DimPlot(data.reference, reduction = "umap", group.by = "subclass_label") + ggtitle("AIBS dataset") +
   theme(axis.text = element_text(size = 15)) + theme(axis.title = element_text(size = 20)) + theme(plot.title = element_text(size = 20)) +
   guides(color = guide_legend(override.aes = list(size=4), ncol=2))
-#ggsave(filename="umap_referenceOA-celltypes.svg",width = 14, height = 11)
 ggsave(filename="umap_AIBS_subclassLabelLegend.svg",width = 14, height = 11)
 dev.off()
 
@@ -172,17 +173,19 @@ data.reference <- RunUMAP(data.reference, dims = 1:30, reduction = "pca", return
 data.query <- MapQuery(anchorset = data.anchors, reference = data.reference, query = data.query,
                            refdata = list(celltype = "subclass_label"), reference.reduction = "pca", reduction.model = "umap")
 
-bitmap("umap_OA_query-predictedLabels.png", width = 14, height = 11, units = 'in', res = 300)
+# original version with cluster_label labels on the umap space:
+#bitmap("umap_OA_query-predictedLabels.png", width = 14, height = 11, units = 'in', res = 300)
 #DimPlot(data.query, reduction = "ref.umap", group.by = "predicted.celltype", label = TRUE, label.size = 5, label.color='black', repel = TRUE) + 
  # ggtitle("Predicted AIBS labels") + labs(x = "UMAP_1",y = "UMAP_2") + 
   #NoLegend() + theme(axis.text = element_text(size = 15)) + theme(axis.title = element_text(size = 20)) + theme(plot.title = element_text(size = 20))
+#ggsave(filename="umap_OA_query-predictedLabels.svg",width = 14, height = 11)
 
-# version with legend instead of labels on the umap space:
+# version with legend instead of labels on the umap space, and using subclass_label for broader labels:
+bitmap("umap_MEMONET_subclassLabelLegend.png", width = 14, height = 11, units = 'in', res = 300)
 DimPlot(data.query, reduction = "ref.umap", group.by = "predicted.celltype") +
   ggtitle("MEMONET dataset") + labs(x = "UMAP_1",y = "UMAP_2") +
   theme(axis.text = element_text(size = 15)) + theme(axis.title = element_text(size = 20)) + theme(plot.title = element_text(size = 20)) +
   guides(color = guide_legend(override.aes = list(size=4), ncol=2))
-#ggsave(filename="umap_OA_query-predictedLabels.svg",width = 14, height = 11)
 ggsave(filename="umap_MEMONET_subclassLabelLegend.svg",width = 14, height = 11)
 dev.off()
 
