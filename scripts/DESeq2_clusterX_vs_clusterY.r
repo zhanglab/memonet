@@ -1,6 +1,5 @@
-# this script runs DESeq2 on DESC subclustering for one cluster vs another (using control and train cells0
+# this script runs DESeq2 on clusters: one cluster vs another 
 # cluster X vs cluster Y- specify in code which cluster is the reference and it'll loop through and compare each of the other clusters to the ref
-# for this, you want the input to be the counts matrix with genes in rows and cells in columns
 
 
 library(tidyverse)
@@ -16,13 +15,13 @@ library(apeglm)
 library(png)
 library(DESeq2)
 
-#for running in parallel (since we're using all the cells as samples rather than the aggregation of all cells in a mouse per cluster like the original DESeq2_DESC script does):
+#for running in parallel:
 library("BiocParallel")
 #register(MulticoreParam(10))
 
 
 ####### load MEX into R ########
-mat <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv", check.names=FALSE)
+mat <- read.csv("~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv", check.names=FALSE)
 rownames(mat) <- mat[,1]
 mat[,1] <- NULL
 mtx <- as.matrix(mat)
@@ -32,8 +31,7 @@ dim(mtx)
 
 
 ######## format metadata ########
-#path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n12.L0.85.csv"
-path <- "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv"
+path <- "~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv"
 # specify reference cluster
 ref <- '0'
 
@@ -66,7 +64,7 @@ clustersi <- clustersi %>%
 #first create the overall directory for clusterX vs clusterY
 dir_overall <- paste0("x_vs_", ref)
 dir.create(dir_overall)
-#then create a subdirectory for the all_cells scenario
+#then create a subdirectory for the all_cells scenario (train and control cells are considered together)
 dir <- paste0(dir_overall, "/all_cells")
 #use dir variable when naming files
 dir.create(dir)
@@ -81,11 +79,11 @@ IDs <- IDs[!IDs %in% ref]
 
 ## loop through each cluster vs the ref cluster
 print("starting loop")
-for(subcluster in IDs){
-  print(paste0("subcluster ", subcluster))
+for(cluster in IDs){
+  print(paste0("cluster ", cluster))
   
   # assign the clusters
-  clusterX <- subcluster
+  clusterX <- cluster
   print(paste0("clusterX: ",clusterX))
   clusterY <- ref
   print(paste0("clusterY: ",clusterY))
@@ -114,9 +112,8 @@ for(subcluster in IDs){
   #assign the first column (barcodes) to be rownames
   metadata[,1] <- NULL
   #then remove the barcodes column
-  print(metadata[1:49,])
+  print(metadata[1:40,])
   #this shows that the rownames have indeed become the cell barcodes
-  #printing 49 lines to show all the clusters to double check which cluster the script is evaluating
   
   #check that the cells are in the same order bt count matrix and metadata
   print(all(rownames(metadata) == colnames(counts)))
