@@ -24,7 +24,7 @@ library("BiocParallel")
 
 
 ####### Read in 10X data
-matrix_dir = "/work/pi_yingzhang_uri_edu/kdunton/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/"
+matrix_dir = "~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/"
 barcode.path <- paste0(matrix_dir, "barcodes.tsv.gz")
 features.path <- paste0(matrix_dir, "features.tsv.gz")
 matrix.path <- paste0(matrix_dir, "matrix.mtx.gz")
@@ -46,7 +46,7 @@ rm(mat)
 
 ### subset to genes and cells remaining after QC
 # read in cells 
-QC_cells <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/QC/cells_after_QC.csv")
+QC_cells <- read.csv("~/Downloads/RNAseq/QC/cells_after_QC.csv")
 # make into vector
 QC_cells <- QC_cells[,1]
 ## subset cells
@@ -68,7 +68,7 @@ rm(mtx)
 
 ####### subset to cells of interest (L2/3, glut, gaba)
 # read in barcode file
-barcodes <- read.csv("/work/pi_yingzhang_uri_edu/kdunton/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv")
+barcodes <- read.csv("~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv")
 names(barcodes)[1] <- 'barcode'
 # subset
 counts <- counts[,barcodes$barcode]
@@ -114,7 +114,7 @@ print(all(rownames(metadata) == colnames(counts)))
 
 
 
-######## run DESeq on all cells train vs control
+######## run DESeq2 on all cells train vs control
 dds <- DESeqDataSetFromMatrix(counts,
                               colData = metadata,
                               design = ~ stim)
