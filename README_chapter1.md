@@ -205,109 +205,6 @@ Output:
 - 'summary' variable lists p-values
 
 
-# DE analysis for glutamatergic, GABAergic neurons
-## 1. Generate barcode files for glutamatergic and GABAergic neurons
-Script: dataset_descriptions.r (OverallDatasetDescription2.r), Part B
-
-Input: data_neurons variable from Part A
-
-Output: 
-- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
-- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
-
-## 2. Run DESeq2, train vs control
-```{r}
-cd ~/Downloads/RNAseq/AIBSmapping/OA
-mkdir DESeq2
-cd DESeq2
-mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl
-```
-
-Script: DESeq2_tr_vs_ctrl.r
-
-
-**DE analysis of glutamatergic neurons:**
-
-Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
-
-Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
-
-Output:
-- unnormalized_counts_from_dds.csv: unnormalized gene expression
-- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
-- normalized_counts_from_dds.csv: normalized gene expression
-- train_vs_control_all_genes.csv: DESeq2 results for all genes
-- train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
-
-
-**DE analysis of GABAergic neurons:**
-
-Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
-
-Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
-
-Output:
-- unnormalized_counts_from_dds.csv: unnormalized gene expression
-- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
-- normalized_counts_from_dds.csv: normalized gene expression
-- train_vs_control_all_genes.csv: DESeq2 results for all genes
-- train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
-
-
-## 3. Summarize DE results: what IEGs are significant?
-genelist.r (* or don't even get into this)
-
-
-
-# DE analysis for L2/3 neurons
-```{r}
-cd ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2
-mkdir L23_0.3_tr_vs_ctrl
-```
-
-## 1. Run DESeq2: train vs control
-Script: DESeq2_tr_vs_ctrl.r
-
-Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl
-
-Input: L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.3.csv
-
-Output:
-- unnormalized_counts_from_dds.csv: unnormalized gene expression
-- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
-- normalized_counts_from_dds.csv: normalized gene expression
-- train_vs_control_all_genes.csv: DESeq2 results for all genes
-- train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
-
-
-## 2. Summarize DE results: what IEGs are significant?
-genelist.r
-
-
-
-## 3. How many DEGs overlap with the 3000 experience-dependent genes (EDGs) used for clustering?
-### a. Download classifier ranked gene list
-```{r}
-cd ~/Downloads/RNAseq/
-mkdir cluster_by_genes
-```
-
-Location on github: memonet/downloads/PredictionGenesDescending0.3.csv
-- This file contains all genes in the dataset, ranked by their weight in the linear classifier. We will subset to the top 3000 as the EDGs
-
-Download to: ~/Downloads/RNAseq/cluster_by_genes
-
-
-### b. Calculate gene set overlap
-Script: dataset_descriptions.r (OverallDatasetDescription2.r), part C
-
-Input:
-- Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/PredictionGenesDescending0.3.csv
-- L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/train_vs_control_sig_genes.csv
-
-Output: The length of DEGoverlap$gene will tell you how many genes are shared between the two gene sets
-
-
 
 # Cluster L2/3 neurons using EDGs
 ## 1. Normalize counts
@@ -369,8 +266,8 @@ Script: classifier_umap_plot.r
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
 
 Input: 
-- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
-- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap_n25.L0.65.csv
 
 Output: classifier_umap_tr_ctrl.svg
 
@@ -380,11 +277,22 @@ Script: statistics.r
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
 
 Input:
-- Choose an input file at the beginning of script. For this part calculating cluster train/control proportions, use ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
+- Choose an input file at the beginning of script. For this part calculating cluster train/control proportions, use ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
 
 Output:
 - cluster_tr_ctrl_prop_hist.svg
 - 'summary' variable lists p-values
+
+### How many cells are in each cluster?
+Script: dataset_descriptions.r, Part D
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
+
+Input: 
+- Clusters file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+
+Output:
+- cluster_percentage_tbl.csv
 
 
 
@@ -415,19 +323,125 @@ Output:
 
 
 
+# DE analysis for glutamatergic, GABAergic neurons
+## 1. Generate barcode files for glutamatergic and GABAergic neurons
+Script: dataset_descriptions.r (OverallDatasetDescription2.r), Part B
+
+Input: data_neurons variable from Part A
+
+Output: 
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
+
+## 2. Run DESeq2, train vs control
+```{r}
+cd ~/Downloads/RNAseq/AIBSmapping/OA
+mkdir DESeq2
+cd DESeq2
+mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl
+```
+
+Script: DESeq2_tr_vs_ctrl.r
+
+
+**DE analysis of glutamatergic neurons:**
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
+
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
+
+Output:
+- unnormalized_counts_from_dds.csv: unnormalized gene expression
+- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- normalized_counts_from_dds.csv: normalized gene expression
+- train_vs_control_all_genes.csv: DESeq2 results for all genes
+- train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+
+
+**DE analysis of GABAergic neurons:**
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
+
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
+
+Output:
+- unnormalized_counts_from_dds.csv: unnormalized gene expression
+- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- normalized_counts_from_dds.csv: normalized gene expression
+- train_vs_control_all_genes.csv: DESeq2 results for all genes
+- train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+
+
+## 3. Summarize DE results: what IEGs are significant?
+genelist.r (* or don't even get into this)
+
+
+# DE analysis for L2/3 neurons
+```{r}
+cd ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2
+mkdir L23_0.3_tr_vs_ctrl
+```
+
+## 1. Run DESeq2: train vs control
+Script: DESeq2_tr_vs_ctrl.r
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl
+
+Input: L2/3 barcode list: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.3.csv
+
+Output:
+- unnormalized_counts_from_dds.csv: unnormalized gene expression
+- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
+- normalized_counts_from_dds.csv: normalized gene expression
+- train_vs_control_all_genes.csv: DESeq2 results for all genes
+- train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+
+
+## 2. Summarize DE results: what IEGs are significant?
+genelist.r
+
+
+
+## 3. How many DEGs overlap with the 3000 experience-dependent genes (EDGs) used for clustering?
+### a. Download classifier ranked gene list
+```{r}
+cd ~/Downloads/RNAseq/
+mkdir cluster_by_genes
+```
+
+Location on github: memonet/downloads/PredictionGenesDescending0.3.csv
+- This file contains all genes in the dataset, ranked by their weight in the linear classifier. We will subset to the top 3000 as the EDGs
+
+Download to: ~/Downloads/RNAseq/cluster_by_genes
+
+
+### b. Calculate gene set overlap
+Script: dataset_descriptions.r (OverallDatasetDescription2.r), part C
+
+Input:
+- Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/PredictionGenesDescending0.3.csv
+- L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/train_vs_control_sig_genes.csv
+
+Output: The length of DEGoverlap$gene will tell you how many genes are shared between the two gene sets
+
+
+
 # DE analysis of clusters
 ## 1. Run DESeq2, one cluster vs the others
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC
 mkdir DESeq2
+cd DESeq2
+mkdir n25.L0.65
 ```
 
 Script: DESeq2_clusterX_vs_others.r
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65
 
 Input: 
 - Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+- unnormalized counts file: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv
 
 Output directory: all_cells/
 - unnormalized_counts_from_dds.csv: unnormalized gene expression
@@ -440,7 +454,7 @@ Output directory: all_cells/
 
 Script: DESeq2-table.r
 
-Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/all_cells
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells
 
 Input: files ending in *_all_genes.csv
 
@@ -448,68 +462,80 @@ Output:
 - DEGstats_allGenes.csv: all genes
 - DEGstats_padj0.05.csv: significant genes (padj <0.05)
 
+
 ## 2. Summarize DE results: what IEGs are significant?
-DEGvisuals.r
+DEGvisuals.r, Part A
 
-Could also use genelist.r to make a table of which IEGs are up or down per clusster (* would have to format a version for manuscript)
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/
 
-# Map AIBS L2/3 cells onto our L2/3 cells and annotate by cluster 
+Input:
+- DE results: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/DEGstats_allGenes.csv
+- DESeq2 normalized counts: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/normalized_counts_from_dds.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+
+Output:
+- IEG_lineplot_zscore.png: line plot indicating the average z-scored expression value of IEGs across clusters. DE significance is indicated by open or closed dot.
+
+
+# Map AIBS L2/3 cells onto MEMONET clusters and annotate by cluster 
 ```{r}
 cd ~/Downloads/RNAseq/AIBSmapping
 mkdir AO
-  # 'AO' stands for AIBS onto Our (memonet) cells
+  # 'AO' stands for AIBS onto Our (MEMONET) cells
+cd AO
+mkdir n25.L0.65
 ```
 
-Script: labelTransfer_AO_umapDESC.r
+Script: mapping_AO.r (labelTransfer_AO_umapDESC.r)
 
-Wd: ~/Downloads/RNAseq/AIBSmapping/AO
+Wd: ~/Downloads/RNAseq/AIBSmapping/AO/n25.L0.65
 
 Input:
-- Memonet data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+- MEMONET data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
 - AIBS dataset. The three files here: ~/Downloads/RNAseq/data/AIBS_data
-- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
-- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+- Umap coordinate file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap_n25.L0.65.csv
 
 Output:
 - prediction_scores.csv: prediction score for the AIBS cells onto the clusters
 - Images:
-  - umap_classifierRef.png: our cells visualized in umap space 
-  - umap_aibsL23_colored_by_classifierCluster.png: aibs cells placed in classifier space, colored by their predicted cluster
+  - umap_MEMONETL23.png: MEMONET cells visualized in the DESC-generated umap space 
+  - umap_AIBSL23.png: AIBS cells placed in classifier space, colored by their predicted cluster
 
 **What proportion of AIBS cells map to each cluster?**
-Script: labelTransfer_AO_stats.r
+Script: dataset_description.r Part E
 
-Wd: ~/Downloads/RNAseq/AIBSmapping/AO
+Wd: ~/Downloads/RNAseq/AIBSmapping/AO/n25.L0.65
 
-Input: *  ~/Downloads/RNAseq/AIBSmapping/AO/_/prediction_scores.csv
+Input: ~/Downloads/RNAseq/AIBSmapping/AO/n25.L0.65/prediction_scores.csv
 
-Output: *
-- pie chart
-- summary table
+Output: 
+- AIBSpie.svg: pie chart of proportions 
+- AIBSmap_table: summary table
 
-Since C_ receives the most AIBS cell assignments, we would like to assume C_ as the baseline condition and run another DE analysis of each cluster in reference to C_.
 
 # DE analysis of clusters
 ## 1. Run DESeq2, one cluster vs baseline
-Script: DESeq2_clusterX_vs_clusterY_whole.r
+Script: DESeq2_clusterX_vs_clusterY.r
 
-Wd: *  /work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/
 
 Input: 
-- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
 
-Output directory: * (the script makes a separate directory per cluster and then you combine the _all_genes files into a new dir for table script
+Set 'ref' variable to '0' to indicate cluster 0 as the baseline comparison
+
+Output directory: x_vs_0/all_cells/
 - unnormalized_counts_from_dds.csv: unnormalized gene expression
 - normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
 - normalized_counts_from_dds.csv: normalized gene expression
-- x_vs_4_all_genes.csv: DESeq2 results for all genes
-- x_vs_4_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
+- x_vs_0_all_genes.csv: DESeq2 results for all genes
+- x_vs_0_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
 **Combine cluster result files into one file:** 
-
 Script: DESeq2-table.r
 
-Wd: *
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/x_vs_0/all_cells/
 
 Input: files ending in *_all_genes.csv
 
@@ -518,9 +544,17 @@ Output:
 - DEGstats_padj0.05.csv: significant genes (padj <0.05)
 
 ## 2. Summarize DE results: what IEGs are significant?
-DEGvisuals.r
+DEGvisuals.r, Part B
 
-Could also use genelist.r to make a table of which IEGs are up or down per cluster (* would have to format a version for manuscript)
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/x_vs_0/all_cells/
+
+Input:
+- DE results: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/x_vs_0/all_cells/DEGstats_allGenes.csv
+- DESeq2 normalized counts: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/x_vs_0/all_cells/normalized_counts_from_dds.csv
+- Cluster file: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+
+Output:
+- IEG_lineplot_refC0.png: line plot indicating the LFC value of IEGs across clusters. DE significance is indicated by open or closed dot. LFC is a metric used by DESeq2 to assess how much a gene’s expression has changed between the two comparisons. A positive value indicates upregulation in comparison to C0 while negative indicates downregulation
 
 
 
