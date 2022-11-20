@@ -1,4 +1,4 @@
-# this script is for clustering L2/3 cells using various parameters
+# this script is for clustering L2/3 cells, looping through various parameters
 # also calculates silhouette score for cluster results
 
 
