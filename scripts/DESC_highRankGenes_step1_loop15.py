@@ -1,4 +1,4 @@
-# this script is for running initial DESC clusters back through DESC to get subclusters
+# this script is for clustering L2/3 cells using various parameters
 # also calculates silhouette score for cluster results
 
 
@@ -15,8 +15,7 @@ sc.logging.print_versions()
 
 
 ######## set parameters to loop through ########
-#n_neighbors = [8,9,10,11,12,13,14,15,18,19,20,21,22,23,24,25]
-n_neighbors = [19,20,21,22,23,24,25]
+n_neighbors = [8,9,10,11,12,13,14,15,18,19,20,21,22,23,24,25]
 n_neighbors = np.array(n_neighbors)
 louvain_resolution = [0.7,0.75,0.8,0.85,0.9]
 louvain_resolution = np.array(louvain_resolution)
@@ -29,7 +28,7 @@ for n in n_neighbors:
   for res in louvain_resolution:
     print("louvain_resolution=" + str(res))
 
-    path = '/work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_DGmtx.csv'
+    path = '~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_EDGmtx.csv'
     print("Path:"+ str(path))
     adata = sc.read(path)
     print("adata initial")
@@ -41,7 +40,7 @@ for n in n_neighbors:
 
     
 
-    save_dir = ["result_DESC22.n"+str(n)+".L"+str(res)]
+    save_dir = ["result_DESC.n"+str(n)+".L"+str(res)]
       #save_dir is a list
     #convert to string
     save_dir = ''.join(map(str,save_dir))
@@ -59,7 +58,7 @@ for n in n_neighbors:
     basis = ''.join(map(str,basis))
     color = ["desc_" + str(res)]
     color = ''.join(map(str,color))
-    save = ["desc.dec22.n" + str(n) + ".L" + str(res) + ".png"]
+    save = ["desc.n" + str(n) + ".L" + str(res) + ".png"]
     print(save)
     save = ''.join(map(str,save))
 
@@ -72,7 +71,7 @@ for n in n_neighbors:
     umap = ["X_umap" + str(res)]
     umap = ''.join(map(str,umap))
     obsm_data=pd.DataFrame(adata.obsm[umap])
-    save_umap = ["umap_dec22.n" + str(n) + ".L" + str(res) + ".csv"]
+    save_umap = ["umap_n" + str(n) + ".L" + str(res) + ".csv"]
     save_umap = ''.join(map(str,save_umap))
     obsm_data.to_csv(save_umap,sep=",")
 
@@ -80,7 +79,7 @@ for n in n_neighbors:
     clu = ["desc_" + str(res)]
     clu = ''.join(map(str,clu))
     obs_data=pd.DataFrame(adata.obs[clu])
-    save_clu = ["clusters_dec22.n" + str(n) + ".L" + str(res) + ".csv"]
+    save_clu = ["clusters_n" + str(n) + ".L" + str(res) + ".csv"]
     save_clu = ''.join(map(str,save_clu))
     obs_data.to_csv(save_clu,sep=",")
 
