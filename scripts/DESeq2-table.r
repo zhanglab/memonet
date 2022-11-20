@@ -1,12 +1,9 @@
 #this script makes a table of all the genes and their DESeq2 results from DESC
-#you can filter to padj<0.1 (or any value) within the script, so you don't end up with a huge file
 #run this in the DESeq2 output folder that you get the _all_genes.csv or _sig_genes.csv files from
 
 library(tidyverse)
 library(schoolmath) #for is.positive
 
-#usage: module load r/4.2.0  **don't do this in interactive or it won't work
-#       nohup srun Rscript /work/pi_yingzhang_uri_edu/kdunton/memonet_github_repo/memonet/scripts/DESC-DESeq2-table.r &
 
 
 filenames <- Sys.glob("*_all_genes.csv")
@@ -22,7 +19,7 @@ colnames(new_df) <- x
 
 ######## loop through each file ########
 for(file in filenames) {
-  #read in the DESeq result file
+  #read in the DESeq2 result file
   df <- read.csv(file)
   filename <- basename(file)
   print(filename)
