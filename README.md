@@ -151,7 +151,7 @@ Input:
 Output:
 - prediction_cutoff.csv
 
-### 3. Summarize results in RStudio: calculate false classification percentage, generate confusion matrix, compare mean and median scores of the test with OA mapping
+### 3. Summarize results: calculate false classification percentage, generate confusion matrix, compare mean and median scores of the test and OA mapping
 Script: mapping_test3.r (testA_prediction_cutoff2.r)
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/test
