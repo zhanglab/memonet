@@ -1,4 +1,4 @@
-This file details all steps of the analysis for Chapter 1, including scripts and location of input/output data files.
+This file details all steps of the analysis.
 
 # Set-up
 ## Set up working directory structure
@@ -618,8 +618,28 @@ Note: Glycolysis and NE (norepinephrine) receptors are not GO terms, we just vis
 
 
 # Reactivation Score
-Download the reference reactivated gene list here:
-~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/
+## First download the reference reactivation gene list 
+Location on github: memonet/downloads/DG_React_NotReact.csv
+- This file is from Jaeger et al. (2018) Supplementary table 3, tab ‘DG_React_NotReact’ 
+
+Download to: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/
+
+## Calculate reactivation score
+Script: reactivation_score.r
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/
+
+Input:
+- DE results of each cluster vs the others: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/DEGstats_padj0.05.csv
+- Reactivation gene list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/DG_React_NotReact.csv
+
+Output:
+- ReactivationScores.csv
+- reactivation_line.png: line plot indicating the reactivation score of each cluster
+- reactivation_matches.png: bar plot indicating the number of DEGs in each cluster that either match or don't match the sign of the reference list
+
+
+
 
 
 
