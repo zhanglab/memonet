@@ -38,7 +38,7 @@ EnrichR *
 
 ## Download datasets
 ```{r} 
-cd ~/Downloads/RNAseq/memonet_data
+cd ~/Downloads/RNAseq/data/memonet_data
 mkdir data_download
 ```
 
