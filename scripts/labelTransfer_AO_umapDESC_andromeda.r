@@ -20,8 +20,9 @@ options(future.globals.maxSize = 55000 * 1024^2) # This is important because pre
 our_data.data = Read10X(data.dir = "/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/scrattch/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/")
 
 ## prepare metadata- read in the classifier cluster file
-metadata <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/DESC_parameter_test/test_loop/clusters_dec22.n25.L0.65.csv")
-  #this data was generated on Unity /work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/DESC_parameter_test/test_loop  and uploaded to andromeda to keep the mapping pipeline versions the ssame
+metadata <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv")
+  #this data was generated on Unity /work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/DESC_parameter_test/test_loop  and uploaded to andromeda to keep the mapping pipeline versions the same. 
+  #I copied the cluster and umap file for the parameters we want to use (n25.L0.65) and moved them to /data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/
 colnames(metadata)[2] <- 'cluster_ID'
 metadata$cluster_ID <- as.character(metadata$cluster_ID)
 # add column for sample ID
@@ -147,9 +148,9 @@ data.reference <- RunPCA(data.reference, npcs = 30, verbose = FALSE)
 
 ### in replacement of RunUMAP:
 ## load DESC umap data
-umap <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/DESC_parameter_test/test_loop/umap_dec22.n25.L0.65.csv")
+umap <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap_n25.L0.65.csv")
 #load cluster data in order to get the barcodes for the umap coordinates
-clusters <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/DESC_parameter_test/test_loop/clusters_dec22.n25.L0.65.csv")
+clusters <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv")
 #the umap file is indexed based on the ordering of the clusters file, so just add the barcode column of the clusters file to the umap file
 umap$barcode <- clusters$X
 umap$X <- NULL
