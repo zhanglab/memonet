@@ -157,7 +157,7 @@ Script: mapping_test3.r (testA_prediction_cutoff2.r)
 Wd: ~/Downloads/RNAseq/AIBSmapping/test
 
 Input: 
-- prediction_cutoff.csv
+- ~/Downloads/RNAseq/AIBSmapping/test/prediction_cutoff.csv
 - ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
 
 Output:
@@ -173,7 +173,8 @@ Script: prediction_score_cutoff_barcodes.r
 - This script generates barcode lists for various prediction score cutoff values (0 to 0.5). 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/
 
-Input: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
+Input: 
+- ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
 
 Output: 
 - One file for each cutoff, listing the cell barcodes remaining: L23barcodes-fromAIBS_*.csv
