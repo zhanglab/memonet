@@ -165,13 +165,46 @@ Output:
 - maxPredictionScores-AIBStest_and_OA.csv: table of mean and median prediction.score.max for AIBS testing and OA mapping; shows calculation for all celltypes and subset for L2/3 cells
 
 
-## Choose L2/3 cutoff score of 0.3
+# Determine a L2/3 mapping reliability cutoff
+Each MEMONET cell gets a prediction score for each cell type in the AIBS dataset; all scores add up to 1. The cell type with the largest score becomes that cell's predicted cell type. To ensure we analyze only L2/3 neurons, we want to remove cells with low reliability for being labeled as L2/3. Reliability is calculated as the sum of prediction scores for L2/3 IT_1, L2/3 IT_2, and L2/3 IT_3.
+
+## Generate lists of barcodes remaining at each cutoff value
 Script: prediction_score_cutoff_barcodes.r
-- This script generates a barcode list for various prediction score cutoff values. We chose a cutoff value of 0.3, meaning any cell that was predicted to be L2/3 and has a sum of prediction scores for L2/3 IT_1, L2/3 IT_2, L2/3 IT_3 <= 0.3 will not be included in downstream analysis.
+- This script generates barcode lists for various prediction score cutoff values (0 to 0.5). 
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/
 
 Input: ~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv
 
-Output: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_0.3.csv
+Output: 
+- One file for each cutoff, listing the cell barcodes remaining: L23barcodes-fromAIBS_*.csv
+
+## Calculate normalized counts for the L2/3 cells
+Script: DESCnormalization.r
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices
+
+Set the 'cutoff' variable to '0' so that all cells predicted to be L2/3 are kept for normalization.
+
+Input:
+- Barcode file for all predicted L2/3 cells: ~/Downloads/memonet/prediction_score_cutoff_barcodes/L23barcodes-fromAIBS_0.csv
+
+Output:
+- DESCnormalized_counts_L23_0.csv
+
+## Determine proper cutoff based on marker gene expression
+Script: celltype_contaminants.r
+- This script calculates the mean expression of L2/3 marker genes (Cux2, Otof, Rtn4rl1, Slc30a3, Cacna2d3) and glial marker (Mertk) for the cells that are removed at each cutoff. We want to choose a cutoff that removes cells with low values of L2/3 markers but high values of Mertk, to ensure that mostly glial cells are removed.
+
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/
+
+Input:
+- Barcode files for each cutoff: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L23barcodes-fromAIBS_*.csv
+- Normalized expression: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.csv
+
+Output:
+- markerGeneExp_predictionCutoffs.csv: table listing the average expression of each marker gene for each cutoff.
+
+We chose a cutoff value of 0.3, as it has the highest mean expression of Mertk while having low expression of L2/3 markers. Any cell that was predicted to be L2/3 and has a sum of prediction scores for L2/3 IT_1, L2/3 IT_2, L2/3 IT_3 <= 0.3 will not be included in downstream analysis.
 
 
 # Investigate cell type proportions
