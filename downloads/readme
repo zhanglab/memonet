@@ -1,1 +1,4 @@
 This directory contains data to be downloaded to follow along with the workflow.
+
+PredictionGenesDescending0.3.csv: Gene list ranked by the linear classifier, with highest-weighted genes at the top. 
+Jaeger_DG_React_NotReact.csv: Reference reactivation-related genes. This list was taken from Jaeger et al. (2018), Supplementary table 3 tab 'DG_React_NotReact' 
