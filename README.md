@@ -247,10 +247,10 @@ Script: DESCnormalization.r
 Set 'cutoff' variable to '0.3'
 
 Input:
-- memonet data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
+- MEMONET data: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix
 
 Output:
-- ~/Downloads/RNAseq/QC/cells_after_QC.csv: list of cells remaining after QC steps on whole dataset. Needed for DESeq2 of clusters
+- ~/Downloads/RNAseq/QC/cells_after_QC.csv: list of cells remaining after QC steps on whole dataset. Needed for DE analysis of clusters
 - ~/Downloads/RNAseq/QC/genes_after_QC.csv: list of genes remaining after QC steps. Needed for the background gene list for GO analyses
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/unnormalized_counts_L23_0.3.csv: unnormalized counts of L2/3 cells, 0.3 cutoff
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv: normalized counts of L2/3 cells, 0.3 cutoff. This will be used as input for classifier training
@@ -282,7 +282,49 @@ Input:
 
 Output: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_EDGmtx.csv
 
-## 3. Run DESC clustering
+
+## 3. Determine parameter settings for running DESC
+We varied the n_neighbors (n) and louvain_resolution (L) parameters and calculated silhouette scores of the resulting clusters in order to find the best parameters for clustering our data.
+
+### Cluster with various parameter settings and calculate silhouette scores
+```{r}
+cd ~/Downloads/RNAseq/cluster_by_genes/
+mkdir DESC_parameter_test
+```
+
+Script: DESC_EDGclustering_loop.py
+- This script loops through various parameter combinations
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/
+
+Input:
+- Normalized L2/3 counts: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_EDGmtx.csv
+
+Output: n represents the value set for n_neighbors; L represents the value set for louvain_resolution
+- cluster_n*.L*.csv
+- umap_n*.L*.csv
+- sil_scores_n*.L*.csv
+
+### Summarize the silhouette scores of each run
+Calculate average silhouette score for each clustering result, and visualize scores with respect to the n and L parameters.
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/
+
+Script: DESCparameterSummary.r
+
+Input:
+- Silhouette scores: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/sil_scores_n*.L*.csv
+
+Output:
+- heatmap_silScore.png: a heatmap showing the average silhouette score at each combination of n and L parameters
+Most scores are very good. A score of -1 indicates wrong clustering, +1 indicates correct clustering, and 0 indicates overlapping clusters.
+
+### Run a smoothing algorithm to find the peak
+EunJung did this part. Running a smoothing algorithm on the heatmap reveals n=25 and L=0.65 to be at the peak of scores.
+Therefore, we chose n=25 and L=0.65.
+
+
+## 4. Run DESC clustering
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 mkdir DESC
@@ -308,7 +350,7 @@ Output:
    - umap0.65desc.n25.L0.65.png: visual of cluster umap projection 
 
 
-## 4. Visualize cluster train/control proportion
+## 5. Visualize cluster train/control proportion
 Script: classifier_umap_plot.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
