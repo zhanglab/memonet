@@ -209,7 +209,6 @@ We chose a cutoff value of 0.3, as it has the highest mean expression of Mertk w
 
 
 # Investigate cell type proportions
-
 Script: dataset_descriptions.r (OverallDatasetDescription2.r), Part A
 
 Functions:
@@ -461,7 +460,15 @@ Output:
 
 
 ## 3. Summarize DE results: what IEGs are significant?
-genelist.r (* or don't even get into this)
+Script: genelist.r 
+
+Input:
+- DE results for GABAergic neurons: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl/train_vs_control_sig_genes.csv
+- DE results for glutamatergic neurons: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl/train_vs_control_sig_genes.csv
+
+Output:
+- ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl/GABA_IEG_DEresults.csv: IEGs that are significant according to DE analysis
+- ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl/glut_IEG_DEresults.csv
 
 
 # DE analysis for L2/3 neurons
@@ -486,7 +493,14 @@ Output:
 
 
 ## 2. Summarize DE results: what IEGs are significant?
-genelist.r
+Script: genelist.r 
+
+Input:
+- DE results for L2/3 neurons: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes.csv
+
+Output:
+- ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/L23_IEG_DEresults.csv: IEGs that are significant according to DE analysis
+
 
 
 
