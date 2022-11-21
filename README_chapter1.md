@@ -206,7 +206,7 @@ Output:
 
 
 
-# Cluster L2/3 neurons using EDGs
+# Cluster L2/3 neurons 
 ## 1. Normalize counts
 Script: DESCnormalization.r
 
@@ -224,12 +224,26 @@ Output:
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs_0.3_transpose.csv: same as above but the transposed version
 
 ## 2. Subset to EDGs 
+```{r}
+cd ~/Downloads/RNAseq/
+mkdir cluster_by_genes
+cd cluster_by_genes
+mkdir 0.3cutoff
+```
+
+### First, download the EDG list
+Location on github: memonet/downloads/PredictionGenesDescending0.3.csv
+- This file contains all genes in the dataset, ranked by their weight in the linear classifier. We will subset to the top 3000 as the EDGs
+
+Download to: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
+
+### Then, subset the normalized counts to the EDGs
 Script: DESC_inputFormat.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 
 Input:
-- Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/PredictionGenesDescending0.3.csv
+- Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv
 - L2/3 normalized counts: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
 
 Output: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_EDGmtx.csv
@@ -299,11 +313,8 @@ Output:
 # GO analysis of the 3000 EDGs
 What biological processes are supported by the 3000 EDGs?
 
-## Now run GO
 ```{r}
-cd ~/Downloads/RNAseq/cluster_by_genes
-mkdir 0.3cutoff
-cd 0.3cutoff
+cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 mkdir GO
 cd GO
 mkdir EDG clusters
@@ -314,7 +325,7 @@ Script: GOvisualization.r, part A
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG
 
 Input: 
-- Ranked gene list (containing the EDGs): ~/Downloads/RNAseq/cluster_by_genes/PredictionGenesDescending0.3.csv
+- Ranked gene list (containing the EDGs): ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv
 - Background gene list: ~/Downloads/RNAseq/QC/genes_after_QC.csv. The background gene list represents all genes in the dataset.
 
 Output: 
@@ -403,23 +414,10 @@ genelist.r
 
 
 ## 3. How many DEGs overlap with the 3000 experience-dependent genes (EDGs) used for clustering?
-### a. Download classifier ranked gene list
-```{r}
-cd ~/Downloads/RNAseq/
-mkdir cluster_by_genes
-```
-
-Location on github: memonet/downloads/PredictionGenesDescending0.3.csv
-- This file contains all genes in the dataset, ranked by their weight in the linear classifier. We will subset to the top 3000 as the EDGs
-
-Download to: ~/Downloads/RNAseq/cluster_by_genes
-
-
-### b. Calculate gene set overlap
 Script: dataset_descriptions.r (OverallDatasetDescription2.r), part C
 
 Input:
-- Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/PredictionGenesDescending0.3.csv
+- Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv
 - L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/train_vs_control_sig_genes.csv
 
 Output: The length of DEGoverlap$gene will tell you how many genes are shared between the two gene sets
