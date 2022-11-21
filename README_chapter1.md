@@ -557,7 +557,71 @@ Output:
 - IEG_lineplot_refC0.png: line plot indicating the LFC value of IEGs across clusters. DE significance is indicated by open or closed dot. LFC is a metric used by DESeq2 to assess how much a gene’s expression has changed between the two comparisons. A positive value indicates upregulation in comparison to C0 while negative indicates downregulation
 
 
+# Gene Ontology analysis of clusters
+Script: GOvisualization.r, Part B
 
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0
+
+Set 'regulation' variable to 'up' in order to analyze the upregulated genes only
+
+Input:
+- Background gene list: ~/Downloads/RNAseq/QC/genes_after_QC.csv
+- DE results from x vs 0 scenario: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/x_vs_0/all_cells/DEGstats_padj0.05.csv
+
+Output:
+- GOresults_n25.L0.65_Bio-upregDEG.csv: csv file of results for all clusters
+- * up_treeBio_n25.L0.65.png: tree plot showing the top 30 most significant GO terms; one tree plot for each cluster
+
+
+## Investigate C4 contamination
+C4's tree plot shows terms characterizing other cell types. Perhaps this cluster contains contaminants that were not filtered out by the L2/3 prediction cutoff threshold.
+Script: celltype_contaminants.r, Part B
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/
+
+Input:
+- Normalized counts: ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
+- Clusters: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+
+Output:
+- L23_glial_marker_exp.csv
+
+
+## Visualize select GO terms in the clusters
+Script: GOvisualization.r, Part C.1
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0
+
+Input:
+- GO results: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/GOresults_n25.L0.65_Bio-upregDEG.csv
+- DESeq2-normalized counts: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/normalized_counts_from_dds.csv
+- Clusters: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+
+Output:
+- Fig4b_line.png: line plot showing the average z-scored gene expressions in each cluster per GO term
+- Fig4b_heatmap.png: heatmap for each GO term showing the z-scored expression value of each gene in the GO term per cluster
+
+
+## Visualize processes unique to C5
+Script: GOvisualization.r, Part C.2
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0
+
+Input:
+- GO results: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/GOresults_n25.L0.65_Bio-upregDEG.csv
+- DESeq2-normalized counts: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/normalized_counts_from_dds.csv
+- Clusters: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
+
+Output:
+- C5_GOtermLinePlot_zscore.png: line plot showing the average z-scored gene expressions in each cluster per GO term
+- C5_GOtermHeatmap.png: heatmap for each GO term showing the z-scored expression value of each gene in the GO term per cluster
+
+Note: Glycolysis and NE (norepinephrine) receptors are not GO terms, we just visualize in the same way as GO terms to show the trends.
+
+
+# Reactivation Score
+Download the reference reactivated gene list here:
+~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/
 
 
 
