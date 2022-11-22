@@ -108,7 +108,7 @@ cd OA
 mkdir barcode_files count_matrices 
 ```
 
-Script: mapping_OA.r (pairwiseOA_clean.r)
+Script: mapping_OA.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/OA
 
@@ -133,7 +133,7 @@ Query: 25% of AIBS data
 
 Reference: remaining 75% of AIBS data
 
-Script: mapping_test1.r (testA_prediction_cutoff.r)
+Script: mapping_test1.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/test
 
@@ -144,7 +144,7 @@ Output:
 - 100 prediction_scores_*.csv files
 
 ### 2. Combine the 100 prediction score files into one file
-Script: mapping_test2.r (testA_prediction_cutoff_table.r)
+Script: mapping_test2.r 
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/test
 
@@ -155,7 +155,7 @@ Output:
 - prediction_cutoff.csv
 
 ### 3. Summarize results: calculate false classification percentage, generate confusion matrix, compare mean and median scores of the test and OA mapping
-Script: mapping_test3.r (testA_prediction_cutoff2.r)
+Script: mapping_test3.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/test
 
@@ -212,7 +212,7 @@ We chose a cutoff value of 0.3, as it has the highest mean expression of Mertk w
 
 
 # Investigate cell type proportions
-Script: dataset_descriptions.r (OverallDatasetDescription2.r), Part A
+Script: dataset_descriptions.r, Part A
 
 Functions:
 - calculate cell subclass proportion (neurons and glia)
@@ -320,6 +320,7 @@ Input:
 
 Output:
 - heatmap_silScore.png: a heatmap showing the average silhouette score at each combination of n and L parameters
+
 Most scores are very good. A score of -1 indicates wrong clustering, +1 indicates correct clustering, and 0 indicates overlapping clusters.
 
 ### Run a smoothing algorithm to find the peak
@@ -415,7 +416,7 @@ Output:
 
 # DE analysis for glutamatergic, GABAergic neurons
 ## 1. Generate barcode files for glutamatergic and GABAergic neurons
-Script: dataset_descriptions.r (OverallDatasetDescription2.r), Part B
+Script: dataset_descriptions.r, Part B
 
 Input: data_neurons variable from Part A
 
@@ -508,7 +509,7 @@ Output:
 
 
 ## 3. How many DEGs overlap with the 3000 experience-dependent genes (EDGs) used for clustering?
-Script: dataset_descriptions.r (OverallDatasetDescription2.r), part C
+Script: dataset_descriptions.r, part C
 
 Input:
 - Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv
@@ -578,7 +579,7 @@ cd AO
 mkdir n25.L0.65
 ```
 
-Script: mapping_AO.r (labelTransfer_AO_umapDESC.r)
+Script: mapping_AO.r
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/AO/n25.L0.65
 
@@ -595,7 +596,7 @@ Output:
   - umap_AIBSL23.png: AIBS cells placed in classifier space, colored by their predicted cluster
 
 **What proportion of AIBS cells map to each cluster?**
-Script: dataset_description.r Part E
+Script: dataset_description.r, Part E
 
 Wd: ~/Downloads/RNAseq/AIBSmapping/AO/n25.L0.65
 
@@ -667,6 +668,7 @@ Output:
 
 ## Investigate C4 contamination
 C4's tree plot shows terms characterizing other cell types. Perhaps this cluster contains contaminants that were not filtered out by the L2/3 prediction cutoff threshold.
+
 Script: celltype_contaminants.r, Part B
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/
