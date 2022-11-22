@@ -3,9 +3,6 @@
 library(tidyverse)
 library(caret)
 
-setwd("~/Desktop/")
-
-
 
 ### summarize the avg silhouette score per cluster ###
 filenames <- Sys.glob("~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/sil_scores_n*.csv")
@@ -36,6 +33,7 @@ for(file in filenames){
   overall_sil_score[i,2] <- overall_sil
   i <- i + 1
 }
+write.csv(overall_sil_score, "~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/parameter_silhouette_score_avgs.csv", row.names = FALSE)
 
 
 ## heatmap ##
