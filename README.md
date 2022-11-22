@@ -27,8 +27,8 @@ You can find scripts here: ~/Downloads/RNAseq/memonet_github_repo/memonet/script
 
 
 ## Download Packages 
-Cell Ranger
-- Follow steps here (make note of download location): https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/installation
+Cell Ranger: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/installation
+- make note of download location 
 
 Seurat: https://satijalab.org/seurat/articles/install.html
 
@@ -36,7 +36,7 @@ DESC: https://eleozzr.github.io/desc/installation.html
 
 DESeq2: https://bioconductor.org/packages/release/bioc/html/DESeq2.html
 
-EnrichR *
+clusterProfiler: https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html
 
 
 ## Download datasets
