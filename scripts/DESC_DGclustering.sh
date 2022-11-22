@@ -14,7 +14,7 @@
 
 
 # load libcudart.so.11.0
-# load DESC
+# load DESC and other dependencies listed in the Python script
 
 
 python <PATH>/DESC_DGclustering.py
