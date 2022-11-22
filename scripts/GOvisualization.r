@@ -4,16 +4,6 @@
 
 
 ### install packages ###
-#-- these are just for following code in link to see how it is supposed to work --#
-#install DOSE: (disease ontology semantic and enrichment analysis- only using to see how examples work)
-#if (!require("BiocManager", quietly = TRUE))
-# install.packages("BiocManager")
-#BiocManager::install("DOSE")
-
-#if (!require("BiocManager", quietly = TRUE))
-# install.packages("BiocManager")
-#BiocManager::install("org.Hs.eg.db")
-#--
 
 #if (!require("BiocManager", quietly = TRUE))
  # install.packages("BiocManager")
@@ -32,8 +22,6 @@
  # install.packages("BiocManager")
 #BiocManager::install("org.Mm.eg.db")
 
-#for converting GO IDs to names for GSEA
-#BiocManager::install("pRoloc")
 
 
 library(tidyverse)
