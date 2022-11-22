@@ -1,5 +1,4 @@
-# this script is for mapping our dataset and transfering cell type labels: our data is query, reference is 10X AIBS dataset
-# use this for chapter 1. Instead of using the barcode list from DESC QC filtering, do the filtering here.
+# this script is for mapping our/MEMONET dataset: our data is query, reference is 10X AIBS dataset
 # 'OA' denotes the mapping of Our dataset to AIBS dataset
 
 library(Seurat)
@@ -18,14 +17,13 @@ options(future.globals.maxSize = 55000 * 1024^2) # This is important because pre
 
 
 ############# read in datasets ##############
-#####  Read in our data - QUERY #####
-our_data.data = Read10X(data.dir = "/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/scrattch/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/")
+#####  Read in MEMONET data - QUERY #####
+our_data.data = Read10X(data.dir = "~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/")
 print("initial data:")
 dim(our_data.data)
 
 ## make Seurat object
 our_data = CreateSeuratObject(counts = our_data.data, min.cells = 0, project = "our_data")
-  #don't filter genes here (with min.cells) bc you want to do this after filtering the cells
 our_data$dataset <- 'our_data'
 print("seurat obj initial:")
 dim(our_data)
@@ -46,7 +44,7 @@ our_data.data <- our_data.data[,barcodes]
 print("initial data, filtered cells:")
 dim(our_data.data)
 
-## read into seurat object again, this time with the filtered cells, and use min.cells=3 to filter genes. Want to filter genes after filtering cells, only because this is how pairwiseOA.r did it
+## read into seurat object again, this time with the filtered cells, and use min.cells=3 to filter genes
 our_data = CreateSeuratObject(counts = our_data.data, min.cells = 3, project = "our_data")
 our_data$dataset <- 'our_data'
 #add percent.mt column again 
@@ -62,11 +60,11 @@ rm(our_data.data)
 
 
 ##### read in the 3 data files for 10X_sn_aibs dataset - REFERENCE #####
-coo_aibs <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/BICCN_integration/data_BICCN/10X-v3_sn_AIBS/aibs_matrix.mtx", header=FALSE)
+coo_aibs <- read.csv("~/Downloads/RNAseq/data/AIBS_data/aibs_matrix.mtx", header=FALSE)
   #the matrix is in COO format
-genes <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/BICCN_integration/data_BICCN/10X-v3_sn_AIBS/aibs_genes.tsv", check.names=FALSE, row.names=NULL)
+genes <- read.csv("~/Downloads/RNAseq/data/AIBS_data/aibs_genes.tsv", check.names=FALSE, row.names=NULL)
   #since there are duplicate gene names, use row.names=NULL
-metadata_sn_10X_aibs <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/BICCN_integration/data_BICCN/10X-v3_sn_AIBS/aibs_barcodes.tsv")
+metadata_sn_10X_aibs <- read.csv("~/Downloads/RNAseq/data/AIBS_data/aibs_barcodes.tsv")
 
 ## convert COO to dgcmatrix
 counts <- Matrix::sparseMatrix(i = coo_aibs$V2, j = coo_aibs$V1, x = coo_aibs$V3)
@@ -127,13 +125,6 @@ data.reference <- ScaleData(data.reference, verbose = FALSE)
 data.reference <- RunPCA(data.reference, npcs = 30, verbose = FALSE)
 data.reference <- RunUMAP(data.reference, reduction = "pca", dims = 1:30, verbose = FALSE)
 
-#original version with cluster_label labels on the umap space:
-#bitmap("umap_referenceOA-celltypes.png", width = 14, height = 11, units = 'in', res = 300)
-#DimPlot(data.reference, reduction = "umap", group.by = "cluster_label", label = TRUE, label.color='black',repel = TRUE, label.size = 5) + NoLegend() + ggtitle("AIBS dataset") + 
-#  theme(axis.text = element_text(size = 15)) + theme(axis.title = element_text(size = 20)) + theme(plot.title = element_text(size = 20)) 
-#ggsave(filename="umap_referenceOA-celltypes.svg",width = 14, height = 11)
-
-# version with legend instead of labels on the umap space, and using subclass_label instead for broader labels:
 bitmap("umap_AIBS_subclassLabelLegend.png", width = 14, height = 11, units = 'in', res = 300)
 DimPlot(data.reference, reduction = "umap", group.by = "subclass_label") + ggtitle("AIBS dataset") +
   theme(axis.text = element_text(size = 15)) + theme(axis.title = element_text(size = 20)) + theme(plot.title = element_text(size = 20)) +
@@ -152,8 +143,6 @@ predictions <- TransferData(anchorset = data.anchors, refdata = data.reference$c
 data.query <- AddMetaData(data.query, metadata = predictions)
   #this step adds a column of predicted.id that comes from 'predictions' variable
 
-# save seurat object and file of prediciton scores
-#saveRDS(data.query, file = "OA-seuratObj.rds")
 table <- data.frame(data.query@meta.data)
 print("predictions table:")
 print(table[1:5,1:10])
@@ -161,26 +150,16 @@ table <- subset(table, select=-c(orig.ident,nCount_RNA,nFeature_RNA,percent.mt,d
 table <- table %>% rename(
   AIBS_predicted_label=predicted.id
 )
-write.csv(table, "prediction_scores.csv")
+write.csv(table, "~/Downloads/RNAseq/AIBSmapping/OA/prediction_scores.csv")
 
 
 
 
 ############# Project query onto reference umap ############# 
 data.reference <- RunUMAP(data.reference, dims = 1:30, reduction = "pca", return.model = TRUE)
-#data.query <- MapQuery(anchorset = data.anchors, reference = data.reference, query = data.query,
- #                          refdata = list(celltype = "cluster_label"), reference.reduction = "pca", reduction.model = "umap")
 data.query <- MapQuery(anchorset = data.anchors, reference = data.reference, query = data.query,
                            refdata = list(celltype = "subclass_label"), reference.reduction = "pca", reduction.model = "umap")
 
-# original version with cluster_label labels on the umap space:
-#bitmap("umap_OA_query-predictedLabels.png", width = 14, height = 11, units = 'in', res = 300)
-#DimPlot(data.query, reduction = "ref.umap", group.by = "predicted.celltype", label = TRUE, label.size = 5, label.color='black', repel = TRUE) + 
- # ggtitle("Predicted AIBS labels") + labs(x = "UMAP_1",y = "UMAP_2") + 
-  #NoLegend() + theme(axis.text = element_text(size = 15)) + theme(axis.title = element_text(size = 20)) + theme(plot.title = element_text(size = 20))
-#ggsave(filename="umap_OA_query-predictedLabels.svg",width = 14, height = 11)
-
-# version with legend instead of labels on the umap space, and using subclass_label for broader labels:
 bitmap("umap_MEMONET_subclassLabelLegend.png", width = 14, height = 11, units = 'in', res = 300)
 DimPlot(data.query, reduction = "ref.umap", group.by = "predicted.celltype") +
   ggtitle("MEMONET dataset") + labs(x = "UMAP_1",y = "UMAP_2") +
