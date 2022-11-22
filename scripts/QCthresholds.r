@@ -3,7 +3,7 @@
 
 library(dplyr)
 library(Seurat)
-library(patchwork)
+#library(patchwork) may not need this
 
 options(future.globals.maxSize = 7000 * 1024^2)
 
