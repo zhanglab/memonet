@@ -1,4 +1,4 @@
-#this script is for performing label transfer of AIBS L2/3 cells onto our L2/3 classifier clusters, using the umap space from DESC
+#this script is for performing label transfer of AIBS L2/3 cells onto MEMONET L2/3 clusters, using the umap space from DESC
 
 library(Seurat)
 library(scCATCH)
@@ -17,12 +17,10 @@ options(future.globals.maxSize = 55000 * 1024^2) # This is important because pre
 
 ############# read in datasets ##############
 #####  Read in our data L2/3 cells- REFERENCE #####
-our_data.data = Read10X(data.dir = "/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/scrattch/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/")
+our_data.data = Read10X(data.dir = "~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/")
 
 ## prepare metadata- read in the classifier cluster file
-metadata <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv")
-  #this data was generated on Unity /work/pi_yingzhang_uri_edu/kdunton/RNAseq/cluster_by_genes/DESC_parameter_test/test_loop  and uploaded to andromeda to keep the mapping pipeline versions the same. 
-  #I copied the cluster and umap file for the parameters we want to use (n25.L0.65) and moved them to /data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/
+metadata <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv")
 colnames(metadata)[2] <- 'cluster_ID'
 metadata$cluster_ID <- as.character(metadata$cluster_ID)
 # add column for sample ID
@@ -66,11 +64,11 @@ rm(metadata)
 
 
 ##### read in the AIBS dataset - QUERY #####
-coo_aibs <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/BICCN_integration/data_BICCN/10X-v3_sn_AIBS/aibs_matrix.mtx", header=FALSE)
+coo_aibs <- read.csv("~/Downloads/RNAseq/data/AIBS_data/aibs_matrix.mtx", header=FALSE)
   #the matrix is in COO format
-genes <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/BICCN_integration/data_BICCN/10X-v3_sn_AIBS/aibs_genes.tsv", check.names=FALSE, row.names=NULL)
+genes <- read.csv("~/Downloads/RNAseq/data/AIBS_data/aibs_genes.tsv", check.names=FALSE, row.names=NULL)
   #since there are duplicate gene names, use row.names=NULL
-metadata_sn_10X_aibs <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/BICCN_integration/data_BICCN/10X-v3_sn_AIBS/aibs_barcodes.tsv")
+metadata_sn_10X_aibs <- read.csv("~/Downloads/RNAseq/data/AIBS_data/aibs_barcodes.tsv")
 
 
 ## convert COO to dgcmatrix
@@ -148,9 +146,9 @@ data.reference <- RunPCA(data.reference, npcs = 30, verbose = FALSE)
 
 ### in replacement of RunUMAP:
 ## load DESC umap data
-umap <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap_n25.L0.65.csv")
+umap <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/umap_n25.L0.65.csv")
 #load cluster data in order to get the barcodes for the umap coordinates
-clusters <- read.csv("/data/zhanglab/kdunton/6samples_cluster/deepseq_3_clustering/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv")
+clusters <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv")
 #the umap file is indexed based on the ordering of the clusters file, so just add the barcode column of the clusters file to the umap file
 umap$barcode <- clusters$X
 umap$X <- NULL
@@ -224,9 +222,6 @@ write.csv(table, "prediction_scores.csv")
 data.query <- MapQuery(anchorset = data.anchors, reference = data.reference, query = data.query,
                            refdata = list(celltype = "cluster_ID"), reference.reduction = "pca", reduction.model = "umap.desc")
   #this function uses pca info, but also uses the umap model "umap.desc" so that our cells project to the DESC umap space
-
-#saveRDS(data.query, file = "aibs_Obj.rds")
-#saveRDS(data.reference, file = "our_Obj.rds")
 
 
 ## color umap by predicted label
