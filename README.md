@@ -1,5 +1,8 @@
 This file details all steps of the analysis.
 
+# Package versions used in this analysis
+
+
 # Set-up
 ## Set up working directory structure
 ```{r} 
