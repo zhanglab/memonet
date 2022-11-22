@@ -316,15 +316,27 @@ Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/
 Script: DESCparameterSummary.r
 
 Input:
-- Silhouette scores: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/sil_scores_n*.L*.csv
+- Silhouette scores for each run: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/sil_scores_n*.L*.csv
 
 Output:
+- parameter_silhouette_score_avgs.csv: summary of the silhouette score and number of clusters produced with each parameter setting combination
 - heatmap_silScore.png: a heatmap showing the average silhouette score at each combination of n and L parameters
 
 Most scores are very good. A score of -1 indicates wrong clustering, +1 indicates correct clustering, and 0 indicates overlapping clusters.
 
 ### Run a smoothing algorithm to find the peak
-EunJung did this part. Running a smoothing algorithm on the heatmap reveals n=25 and L=0.65 to be at the peak of scores.
+Script: sil_score_smooth.py
+- Dr. EunJung Hwang wrote this script
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/
+
+Input: 
+- Silhouette score summary: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/parameter_silhouette_score_avgs.csv
+
+Output:
+- Smooth_Silhouette.png: left plot is a heatmap of silhouette scores by n and L parameters (similar to heatmap_silScore.png); right plot is a smoothed version, with red x indicating the peak
+
+Running a smoothing algorithm on the heatmap of silhouette scores by n and L parameters reveals n=25 and L=0.65 to be at the peak of scores.
 Therefore, we chose n=25 and L=0.65.
 
 
