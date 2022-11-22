@@ -29,7 +29,6 @@ library(schoolmath)
 library(clusterProfiler) #runs GO
 library(org.Mm.eg.db)
 library(enrichplot) #visualize results
-library(pRoloc)
 
 
 #--------------- Part A: GO analysis of EDGs ---------------#
