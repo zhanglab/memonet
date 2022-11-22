@@ -1,7 +1,7 @@
 # this script was written by Dr. EunJung Hwang
 # it runs a smoothing function on the silhouette scores of each parameter combo to determine the peak silhouette score, and thus, the settings to use for DESC clustering
 
-# to use with Jupyter notebook, run 'pip install notebook' in terminal, then 'jupyter notebook' to run line-by-line
+# to use with Jupyter notebook, run 'pip install notebook' in terminal, then 'jupyter notebook' to run line-by-line (copy and paste this script into juypter notebook console)
 
 import glob
 import pandas as pd
