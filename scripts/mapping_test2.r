@@ -1,4 +1,4 @@
-#this script concatenates a table of all iterations of testA-prediction_cutoff.r
+#this script concatenates a table of all iterations of mapping_test1.r
 
 
 library(tidyverse)
