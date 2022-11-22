@@ -9,7 +9,7 @@
 
 
 #usage: 
-#       sbatch <PATH>/DESC_DGclustering.sh
+#       sbatch <PATH>/DESC_EDGclustering.sh
 # takes ~ 5min
 
 
@@ -17,4 +17,4 @@
 # load DESC and other dependencies listed in the Python script
 
 
-python <PATH>/DESC_DGclustering.py
+python <PATH>/DESC_EDGclustering.py
