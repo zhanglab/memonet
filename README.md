@@ -27,6 +27,8 @@ You can find scripts here: ~/Downloads/RNAseq/memonet_github_repo/memonet/script
 
 
 ## Download Packages 
+For the full list for all dependencies by script, see memonet/scripts/readme
+
 Cell Ranger v4.0.0: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/installation
 - make note of download location 
 
