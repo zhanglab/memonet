@@ -2,11 +2,9 @@
 
 
 library(tidyverse)
-library(gridExtra)
 library(schoolmath) #for is.positive
 library(RColorBrewer) #for colorblind palette 
 library(viridis) # for heatmap colors
-library(ggpubr) # for ggarrange
 library(matrixStats) # for rowSds
 library(pheatmap)
 library(svglite)
