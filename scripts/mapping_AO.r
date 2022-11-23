@@ -1,7 +1,7 @@
 #this script is for performing label transfer of AIBS L2/3 cells onto MEMONET L2/3 clusters, using the umap space from DESC
 
 library(Seurat)
-library(scCATCH)
+#library(scCATCH)
 library(ggplot2)
 library(patchwork)
 library(cowplot)
