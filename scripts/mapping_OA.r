@@ -2,7 +2,7 @@
 # 'OA' denotes the mapping of Our dataset to AIBS dataset
 
 library(Seurat)
-library(scCATCH)
+#library(scCATCH)
 library(ggplot2)
 library(patchwork)
 library(cowplot)
