@@ -3,7 +3,7 @@
 
 
 library(Seurat)
-library(scCATCH)
+#library(scCATCH)
 library(ggplot2)
 library(patchwork)
 library(cowplot)
