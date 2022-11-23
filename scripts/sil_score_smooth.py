@@ -1,7 +1,7 @@
-# this script was written by Dr. EunJung Hwang
+# this script adapted from Dr. EunJung Hwang
 # it runs a smoothing function on the silhouette scores of each parameter combo to determine the peak silhouette score, and thus, the settings to use for DESC clustering
 
-# to use with Jupyter notebook, run 'pip install notebook' in terminal, then 'jupyter notebook' to run line-by-line (copy and paste this script into juypter notebook console)
+# to use with Jupyter notebook, run 'pip install notebook' in terminal, then 'jupyter notebook' to run line-by-line
 
 import glob
 import pandas as pd
@@ -38,8 +38,12 @@ for i,u1 in enumerate(uP1):
 img = ndimage.gaussian_filter(ss_mat, sigma=(2, 1), order=0)
 inds=np.unravel_index(np.argmax(img, axis=None), img.shape)
 
-# left plot (regular heatmap):
+
+
+### original plot without colorbar
 fig, axes = plt.subplots(1,2,figsize=[10,5])
+
+# left plot (regular heatmap):
 plt.subplot(1,2,1)
 plt.matshow(ss_mat, fignum=0)
 plt.plot(inds[1],inds[0],color='red',marker='x')
@@ -48,9 +52,9 @@ plt.xlabel('Louvain resolution')
 plt.ylabel('N_neighbor')
 plt.yticks(np.arange(len(uP1)),labels=np.unique(sp1))
 plt.gca().invert_yaxis()
-plt.subplot(1,2,2)
 
 # right plot (smooth):
+plt.subplot(1,2,2)
 print(uP1[inds[0]], uP2[inds[1]])
 plt.matshow(img, fignum=0)
 plt.plot(inds[1],inds[0],color='red',marker='x')
@@ -60,6 +64,33 @@ plt.ylabel('N_neighbor')
 plt.yticks(np.arange(len(uP1)),labels=np.unique(sp1))
 plt.gca().invert_yaxis()
 
-# save plots:
+
+
+### plot with colorbars
+fig, axes = plt.subplots(1,2,figsize=[12,6])
+
+# left plot (regular heatmap):
+plt.subplot(1,2,1)
+heatmap = plt.pcolor(ss_mat)
+plt.colorbar(heatmap)
+plt.plot(7.5,15.5,color='red',marker='x')
+plt.xticks(np.arange(len(uP2)),labels=np.unique(sp2),rotation=90)
+plt.xlabel('Louvain resolution')
+plt.ylabel('N_neighbor')
+plt.yticks(np.arange(len(uP1)),labels=np.unique(sp1))
+plt.gca()
+
+# right plot (smooth):
+plt.subplot(1,2,2)
+heatmap = plt.pcolor(img)
+plt.colorbar(heatmap)
+plt.plot(7.5,15.5,color='red',marker='x')
+plt.xticks(np.arange(len(uP2)),labels=np.unique(sp2),rotation=90)
+plt.xlabel('Louvain resolution')
+plt.ylabel('N_neighbor')
+plt.yticks(np.arange(len(uP1)),labels=np.unique(sp1))
+plt.gca()
+
+#save plots
 plt.savefig('Smooth_Silhouette.png')
 plt.savefig('Smooth_Silhouette.svg')
