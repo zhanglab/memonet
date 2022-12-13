@@ -46,12 +46,12 @@ mkdir data_download
 ```
 
 MEMONET dataset:
-- Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 (* will need to change this to the ncbi repository number once we upload data there)
+- Location of data: https://docs.google.com/spreadsheets/d/1mU7l8Oj-Fr4FYE6IlmTcX_s2YdCtZXx0GgJI3jBE3J4/edit#gid=0 
 - Script for downloading: download.sh
 - Download to: ~/Downloads/RNAseq/data/memonet_data/data_download
 
 AIBS dataset:
-- Location of data: *
+- Location of data: /data/zhanglab/AWS-bkup/MEMONET/data_BICCN/10X-v3_sn_AIBS/
 - Download to: ~/Downloads/RNAseq/data/AIBS_data
 - Rename the files to: aibs_barcodes.tsv, aibs_genes.tsv, aibs_matrix.mtx
 
