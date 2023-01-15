@@ -361,6 +361,7 @@ Output:
 - clusters_n25.L0.65.csv: lists each cell barcode and the cluster it is assigned
 - umap_n25.L0.65.csv: umap x and y coordinates; row indices correspond to the barcode order in clusters_n25.L0.65.csv
 - tsne_n25.L0.65.csv: tsne x and y coordinates
+- desc_result.n25.L0.65.h5ad: AnnData object containing the information produced by clustering, including: cluster assignments, umap and tsne coordinates, etc. This will be used for trajectory analysis later
 - result_DESC.n25.L0.65/: directory for encoder weights and model info
 - figures/
    - umap0.65desc.n25.L0.65.png: visual of cluster umap projection 
@@ -748,6 +749,18 @@ Output:
 
 
 
+# Trajectory Analysis
+Script: Trajectory_Analysis.ipynb
+
+Use this Jupyter Notebook script to run trajectory analysis and visualize plots.
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/
+
+Input: 
+- AnnData object containing clustering results: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/desc_result.n25.L0.65.h5ad
+
+Output:
+- Plots are visualized within the Jupyter Notebook
 
 
 
