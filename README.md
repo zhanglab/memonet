@@ -242,20 +242,6 @@ Output:
 - 'summary' variable lists p-values
 
 
-# Train logistic classifier
-## Scripts related to the logistic classifier (courtesy of Dr. Nathan Hedrick):
-PlotLogisticFunction.m
-- Plot the logistic function
-
-ShuffledLogisticClassifier.m
-- Test the classifier accuracy when cell labels ('train' or 'control') have been shuffled 100x
-
-TopGeneOptimization.m
-- Makes the prediction accuracy optimization curve by looping over different numbers of top genes (sorted by their logistic regression indices)
-- Input: LogisticRegressionIndices.xlsx
-    - This file lists the logistic regression weights for each gene, where indices match the order of genes in ___
-
-
 
 # Cluster L2/3 neurons 
 ## 1. Normalize counts
@@ -274,7 +260,22 @@ Output:
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs_0.3.csv: list of cells and mouse ID, for reference during classifier training
 - ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/sampleIDs_0.3_transpose.csv: same as above but the transposed version
 
-## 2. Subset to EDGs 
+
+## 2. Train logistic classifier
+### Scripts related to the logistic classifier (courtesy of Dr. Nathan Hedrick):
+PlotLogisticFunction.m
+- Plot the logistic function
+
+ShuffledLogisticClassifier.m
+- Test the classifier accuracy when cell labels ('train' or 'control') have been shuffled 100x
+
+TopGeneOptimization.m
+- Makes the prediction accuracy optimization curve by looping over different numbers of top genes (sorted by their logistic regression indices)
+- Input: memonet/downloads/LogisticRegressionIndices.xlsx
+    - This file lists the logistic regression weights for each gene, where indices match the order of genes in ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
+
+
+## 3. Subset to EDGs 
 ```{r}
 cd ~/Downloads/RNAseq/
 mkdir cluster_by_genes
@@ -300,7 +301,7 @@ Input:
 Output: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/L23_0.3_EDGmtx.csv
 
 
-## 3. Determine parameter settings for running DESC
+## 4. Determine parameter settings for running DESC
 We varied the n_neighbors (n) and louvain_resolution (L) parameters and calculated silhouette scores of the resulting clusters in order to find the best parameters for clustering our data.
 
 ### Cluster with various parameter settings and calculate silhouette scores
@@ -354,7 +355,7 @@ Running a smoothing algorithm on the heatmap of silhouette scores by n and L par
 Therefore, we chose n=25 and L=0.65.
 
 
-## 4. Run DESC clustering
+## 5. Run DESC clustering
 ```{r}
 cd ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff
 mkdir DESC
@@ -381,7 +382,7 @@ Output:
    - umap0.65desc.n25.L0.65.png: visual of cluster umap projection 
 
 
-## 5. Visualize cluster train/control proportion
+## 6. Visualize cluster train/control proportion
 Script: classifier_umap_plot.r
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
