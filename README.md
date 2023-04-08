@@ -242,6 +242,20 @@ Output:
 - 'summary' variable lists p-values
 
 
+# Train logistic classifier
+## Scripts related to the logistic classifier (courtesy of Dr. Nathan Hedrick):
+PlotLogisticFunction.m
+- Plot the logistic function
+
+ShuffledLogisticClassifier.m
+- Test the classifier accuracy when cell labels ('train' or 'control') have been shuffled 100x
+
+TopGeneOptimization.m
+- Makes the prediction accuracy optimization curve by looping over different numbers of top genes (sorted by their logistic regression indices)
+- Input: LogisticRegressionIndices.xlsx
+    - This file lists the logistic regression weights for each gene, where indices match the order of genes in ___
+
+
 
 # Cluster L2/3 neurons 
 ## 1. Normalize counts
@@ -326,7 +340,7 @@ Most scores are very good. A score of -1 indicates wrong clustering, +1 indicate
 
 ### Run a smoothing algorithm to find the peak
 Script: sil_score_smooth.py
-- Dr. EunJung Hwang wrote this script
+- Courtesy of Dr. EunJung Hwang
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/DESC_parameter_test/
 
@@ -413,7 +427,7 @@ cd GO
 mkdir EDG clusters
 ```
 
-Script: GOvisualization.r, part A; see GoTermAnalysis.m for generating manuscript GO term figures
+Script: GOvisualization.r, part A; see GoTermAnalysis.m (courtesy of Dr. Nathan Hedrick) for generating manuscript GO term figures
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG
 
@@ -751,6 +765,7 @@ Output:
 
 # Trajectory Analysis
 Script: Trajectory_Analysis.ipynb
+- Courtesy of Dr. Rudiyanto Gunawan
 
 Use this Jupyter Notebook script to run trajectory analysis and visualize plots.
 
