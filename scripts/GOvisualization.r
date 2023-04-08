@@ -87,7 +87,7 @@ ggsave("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG/EDG_GO.svg", width 
 
 
 
-#--------------- Part B. GO analysis of clusters: treeplot loop; Figures S5---------------#
+#--------------- Part B. GO analysis of clusters: treeplot loop ---------------#
 ## saves a combined file of GO results for all clusters
 
 ### new analysis 0.3 cutoff
@@ -165,7 +165,7 @@ write.csv(GOresults, paste0("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/cl
 
 
 #------------- Part C.1. Heatmaps and line plots of GO terms of interest -------------#
-### FIGURE 4b - compare terms of interest across clusters to show differences in learning-related terms
+### compare terms of interest across clusters to show differences in learning-related terms
 regulation <- 'upreg'
 GO <- read.csv(paste0("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/GOresults_n25.L0.65_Bio-",regulation,"DEG.csv"), check.names=FALSE)
 GOterms <- c('long-term synaptic potentiation','long-term synaptic depression','dendritic spine morphogenesis',
@@ -329,7 +329,7 @@ for(term in GOterms_order){
 # arrange the lineplots together
 z1 <- do.call(grid.arrange,c(a1, nrow=1))
 # save as svg to get rid of extra legends
-svg(filename="~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/Fig4b_line.svg", width = 12, height = 2)
+svg(filename="~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/GO_line.svg", width = 12, height = 2)
 plot(z1)
 dev.off()
 
@@ -380,14 +380,14 @@ for(i in 1:length(mn)){
 }
 # arrange the heatmaps together
 z <- do.call(grid.arrange,c(a, nrow=1))
-svg(filename="~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/Fig4b_heatmap.svg", width = 12, height = 12)
+svg(filename="~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/GO_heatmap.svg", width = 12, height = 12)
 plot(z)
 dev.off()
 
 
 
 #------------- Part C.2. Heatmaps and line plots of GO terms of interest specific to C5 -------------#
-### FIGURE 4e - compare terms special to C5
+### compare terms special to C5
 regulation <- 'upreg'
 GO <- read.csv(paste0("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0/GOresults_n25.L0.65_Bio-",regulation,"DEG.csv"), check.names=FALSE)
 GOterms <- c('ATP biosynthetic process')
