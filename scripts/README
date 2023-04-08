@@ -13,6 +13,13 @@ DESCnormalization: normalize L2/3 counts
 celltype_contaminants: calculate mean expression of marker genes for cells removed at each prediciton score cutoff, to determine which cutoff removes glial contaminants
 dataset_descriptions.r: compare cell type proportions of AIBS and MEMONET datasets; generate barcode lists for GABAergic and glutamatergic neurons; 
 statistics.r: calculate significance of train and control proportion mapped to the AIBS L2/3 subtypes, and later for train and control mapped to clusters
+
+#--- Logistic classifier scripts
+PlotLogisticFunction.m: plot logistic function
+ShuffledLogisticClassifier.m: test the classifier accuracy when cell labels ('train' or 'control') have been shuffled 100x
+TopGeneOptimization.m: makes the prediction accuracy optimization curve by looping over different numbers of top genes (sorted by their logistic regression indices)
+#---
+
 DESC_inputFormat.r: subset L2/3 normalized counts to EDGs
 DESC_EDGclustering_loop.py: cluster using EDG-subset genelist using various combinations of DESC parameters and calculate silhouette scores of cluster results
 DESCparameterSummary.r: calculate avererage silhouette score per clustering result
@@ -20,6 +27,7 @@ sil_score_smooth.py: run a smoothing algorithm on the silhouette scores to find 
 DESC_EDGclustering.py: cluster using EDG-subset genelist using the chosen parameter values
 classifier_umap_plot: visualize clusters
 GOvisualization.r: run Gene Ontology analysis on the 3000 EDGs and later on the upregulated DEGs of the clusters
+GoTermAnalysis.m: plot GO results for specified GO terms
 DESeq2_tr_vs_ctrl.r: DE analysis of all glut, GABA, or L2/3 neurons
 genelist.r: summarize IEG significance from the DE analysis
 DESeq2_clusterX_vs_others.r: DE analysis of one cluster vs others
