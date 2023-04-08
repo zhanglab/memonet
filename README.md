@@ -413,7 +413,7 @@ cd GO
 mkdir EDG clusters
 ```
 
-Script: GOvisualization.r, part A
+Script: GOvisualization.r, part A; see GoTermAnalysis.m for generating manuscript GO term figures
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG
 
@@ -664,7 +664,7 @@ Output:
 
 
 # Gene Ontology analysis of clusters
-Script: GOvisualization.r, Part B
+Script: GOvisualization.r, Part B; see GoTermAnalysis.m for generating manuscript GO term figures
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0
 
@@ -695,7 +695,7 @@ Output:
 
 
 ## Visualize select GO terms in the clusters
-Script: GOvisualization.r, Part C.1
+Script: GOvisualization.r, Part C.1; see GoTermAnalysis.m for generating manuscript GO term figures
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0
 
@@ -705,12 +705,12 @@ Input:
 - Clusters: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
 
 Output:
-- Fig4b_line.png: line plot showing the average z-scored gene expressions in each cluster per GO term
-- Fig4b_heatmap.png: heatmap for each GO term showing the z-scored expression value of each gene in the GO term per cluster
+- GO_line.png: line plot showing the average z-scored gene expressions in each cluster per GO term
+- GO_heatmap.png: heatmap for each GO term showing the z-scored expression value of each gene in the GO term per cluster
 
 
 ## Visualize processes unique to C5
-Script: GOvisualization.r, Part C.2
+Script: GOvisualization.r, Part C.2; see GoTermAnalysis.m for generating manuscript GO term figures
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/clusters/n25.L0.65/x_vs_0
 
