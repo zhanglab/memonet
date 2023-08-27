@@ -13,7 +13,7 @@ library(svglite)
 
 ##### IEG line plots across cluster ##### 
 
-#--------- Part A. FIGURE 4a. DE of each cluster vs others. Plot z-score expression of IEGs across clusters, indicating DE significance result with open/closed dots ###
+#--------- Part A. DE of each cluster vs others. Plot z-score expression of IEGs across clusters, indicating DE significance result with open/closed dots ###
 ### read in DEG data
 # ref others
 DEG <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/DEGstats_allGenes.csv")
@@ -34,7 +34,6 @@ DEG <- DEG %>% mutate(significance = case_when(padj <= 0.05 ~ "sig", padj > 0.05
 DEG <- na.omit(DEG)
 DEG$significance <- as.factor(DEG$significance)
 DEG$cluster <- as.factor(DEG$cluster)
-
 
 ### read in DESeq2 normalized values
 countsi <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_cells/normalized_counts_from_dds.csv", check.names=FALSE)
@@ -109,7 +108,7 @@ ggsave("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/all_
 
 
 
-#--------- Part B. FIGURE S4. DE of each cluster vs C0. IEGs plotted with LFC values 
+#--------- Part B. DE of each cluster vs C0. IEGs plotted with LFC values 
 ### read in DEG data
 # ref C0; use DEGstats file with no padj cutoff:
 DEG <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/DESeq2/n25.L0.65/x_vs_0/all_cells/DEGstats_allGenes.csv")
@@ -130,11 +129,11 @@ DEG <- DEG %>% mutate(significance = case_when(padj <= 0.05 ~ "sig", padj > 0.05
 DEG <- na.omit(DEG)
 DEG$significance <- as.factor(DEG$significance)
 DEG$cluster <- as.factor(DEG$cluster)
-
+# remove C4
+DEG <- subset(DEG, cluster != '4')
 
 
 ### plot ###
-
 #print the names of the colors so you can remove the light yellow one (hard to see)
 brewer.pal(n = 12, name = "Paired")
 colors_colorblind <- c("#A6CEE3","#1F78B4","#B2DF8A","#33A02C","#FB9A99","#E31A1C","#FDBF6F","#FF7F00","#CAB2D6","#6A3D9A","#B15928")
