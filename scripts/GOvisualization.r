@@ -83,7 +83,72 @@ ggsave("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG/EDG_GO.png", width 
 ggsave("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG/EDG_GO.svg", width = 8, height=7.54)
 
 
+#--------------- Part A-2: GO analysis of unique EDGs ---------------#
+#run GO analysis on the unique EDGs (EDGs that don't show in the DE results of L2/3 train vs control)
 
+# read in EDGs
+EDGs <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv", header=FALSE) 
+EDGs <- na.omit(EDGs)
+# subset to top 3000
+EDGs <- as.data.frame(EDGs[1:3000,])
+colnames(EDGs)[1] <- 'gene'
+
+# read in DEGs
+DEG <- read.csv("~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes.csv")
+
+## get list of genes shared in EDG and DEG list - to have a column indicating with DEGs are also EDGs
+DEG2 <- as.data.frame(DEG[,'gene'])
+names(DEG2)[1] <- 'gene'
+shared <- inner_join(EDGs, DEG2)
+shared <- shared$gene
+#make column in DEG list to indicate whether the gene is also in EDG list
+DEG3 <- DEG
+DEG3$Also_EDG <- ''
+DEG3$Also_EDG <- ifelse(DEG3$gene %in% shared,"Yes", "No")
+#https://stackoverflow.com/questions/16570302/how-to-add-a-factor-column-to-dataframe-based-on-a-conditional-statement-from-an
+#make sure it worked and there are 1147 "yes"
+table(DEG3$Also_EDG)
+#save and add to the DEG excel sheet
+write.csv(DEG3, "~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes_EDGcolumn.csv", row.names = FALSE, quote=FALSE)
+
+## get list of unique genes appearing in EDG but not DEG
+unique_genes <- as.data.frame(setdiff(EDGs$gene,DEG$gene))
+colnames(unique_genes)[1] <- 'gene'
+#write.csv(unique_genes, "~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/UniqueEDG_noDEG-allL23trvsctrl.csv", row.names=FALSE)
+
+### run GO for the unique EDGs
+genelist <- unique_genes
+#genelist <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/UniqueEDG_noDEG-allL23trvsctrl.csv")
+
+#background list
+background <- read.csv("~/Downloads/RNAseq/QC/genes_after_QC.csv")
+names(background)[1] <- 'V1'
+# convert symbol to entrez
+DEG_entrez <- AnnotationDbi::select(org.Mm.eg.db, genelist$gene,
+                                    "ENTREZID", "SYMBOL")
+DEG_entrez <- DEG_entrez[,'ENTREZID']
+DEG_entrez <- na.omit(DEG_entrez)
+background_entrez <- AnnotationDbi::select(org.Mm.eg.db, background$V1,
+                                           "ENTREZID", "SYMBOL")
+background_entrez <- background_entrez[,'ENTREZID']
+background_entrez <- na.omit(background_entrez)
+# run GO
+#https://yulab-smu.top/biomedical-knowledge-mining-book/clusterprofiler-go.html 
+ego2 <- enrichGO(gene          = DEG_entrez,
+                 universe      = background_entrez,
+                 OrgDb         = org.Mm.eg.db,
+                 ont           = "BP",
+                 pAdjustMethod = "fdr",
+                 pvalueCutoff  = 0.05,
+                 qvalueCutoff  = 0.05,
+                 readable      = TRUE)
+   #readable will map entrezid to gene name
+   #gene has to be vector of entrez ids
+   #ont options: CC (cellular component), BP (bio process), MF (molecular function), ALL (for all 3)
+# save results in table format
+ego_save2 <- as.data.frame(ego2@result) 
+# the normal way of saving -- as.data.frame(ego2) -- doesn't work since nothing is significant
+write.csv(ego_save2, "~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG/uniqueEDG_GO.csv", quote=TRUE, row.names=FALSE)
 
 
 
