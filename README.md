@@ -440,6 +440,21 @@ Output:
 - EDG_GO.csv: GO results for the 3000 EDGs 
 - EDG_GO.png: treeplot showing GO results for the 3000 EDGs
 
+## GO analysis of the unique EDGs
+What biological processes are supported by the unique EDGs (those that do not appear in the DE results of L2/3 train vs control)?
+
+Script: GOvisualization.r, part A-2
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG
+
+Input: 
+- Ranked gene list (containing the EDGs): ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv
+- Background gene list: ~/Downloads/RNAseq/QC/genes_after_QC.csv. The background gene list represents all genes in the dataset.
+- DEGs from L2/3 tr vs ctrl: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes.csv
+
+Output: 
+- L2/3 tr vs ctrl DEG results with an extra column specifying whether the DEG is also an EDG: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes_EDGcolumn.csv
+- GO results for the unique EDGs: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/GO/EDG/uniqueEDG_GO.csv
 
 
 # DE analysis for neuron subtypes
