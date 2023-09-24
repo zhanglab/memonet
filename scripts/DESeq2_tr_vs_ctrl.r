@@ -1,5 +1,5 @@
 # this script runs DESeq2 comparing ctrl vs train
-# use for L2/3, glut, GABA
+# use for neuron subtypes: L2/3, glut, GABA, L5, pvalb, sst, vip
 
 
 #library(Seurat) 
@@ -66,9 +66,10 @@ print(dim(counts))
 rm(mtx)
 
 
-####### subset to cells of interest (L2/3, glut, gaba)
+####### subset to cells of interest (L2/3, glut, gaba, pvalb, sst, vip, L5)
 # read in barcode file
-barcodes <- read.csv("~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv")
+barcodes <- read.csv("~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/<subtype>_barcodes.csv")
+  #ie L5_barcodes.csv
 names(barcodes)[1] <- 'barcode'
 # subset
 counts <- counts[,barcodes$barcode]
