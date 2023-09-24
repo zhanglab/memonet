@@ -56,7 +56,7 @@ write.csv(IEGs, "~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl/glut_I
 
 
 ## Read in DE results  
-# Glut:
+# L2/3:
 genes <- read.csv("~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes.csv") 
 
 ## make column to indicate whether gene is upregulated or downregulated
