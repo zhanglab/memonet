@@ -1,7 +1,7 @@
 # this script calculates various things:
 # Part A: cell type composition comparison of AIBS and MEMONET datasets
 #         inhibitory neuron percentage of AIBS and MEMONET datasets
-# Part B: save barcode files for GABA and Glut neurons
+# Part B: save barcode files for specified neuron types
 #         proportion of AIBS and MEMONET cells in each L2/3 subclass (not split by train/control)
 # Part C: gene overlap between L2/3 DE analysis and the 3000 EDGs
 # Part D: percentage of MEMONET cells in each L2/3 cluster
@@ -288,19 +288,42 @@ ggsave("~/Downloads/RNAseq/AIBSmapping/OA/CelltypePropPerDataset.png")
 
 
 
-#-------- Part B: Save file of glut and GABA barcodes for DE analysis --------#
+#-------- Part B: Save file of neuron subtype barcodes for DE analysis --------#
 ### save file of glut barcodes, for DE analysis 
 data_glut <- subset(data_neurons, class %in% 'glut')
 data_glut <- as.data.frame(data_glut[,'X'])
 colnames(data_glut) <- 'x'
-write.csv(data_glut, "~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_glut_barcodes.csv", row.names=FALSE)
+write.csv(data_glut, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv", row.names=FALSE)
 
 ### save file of GABA barcodes, for DE analysis
 data_GABA <- subset(data_neurons, class %in% 'GABA')
 data_GABA <- as.data.frame(data_GABA[,'X'])
 colnames(data_GABA) <- 'x'
-write.csv(data_GABA, "~/Downloads/RNAseq/AIBSmapping/OA/AIBS-defined_GABA_barcodes.csv", row.names=FALSE)
+write.csv(data_GABA, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv", row.names=FALSE)
 
+### save file of L5 neuron barcodes for reviewer analysis
+data_L5 <- subset(data_neurons, subclass %in% c('L5 IT', 'L5 ET', 'L5 NP'))
+data_L5 <- as.data.frame(data_L5[,'X'])
+colnames(data_L5) <- 'x'
+write.csv(data_L5, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L5_barcodes.csv", row.names=FALSE)
+
+## save file of GABA vip
+data_vip <- subset(data_neurons, subclass %in% 'Vip')
+data_vip <- as.data.frame(data_vip[,'X'])
+colnames(data_vip) <- 'x'
+write.csv(data_vip, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/vip_barcodes.csv", row.names=FALSE)
+
+## save file of GABA sst
+data_sst <- subset(data_neurons, subclass %in% 'Sst')
+data_sst <- as.data.frame(data_sst[,'X'])
+colnames(data_sst) <- 'x'
+write.csv(data_sst, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/sst_barcodes.csv", row.names=FALSE)
+
+## save file of GABA pvalb
+data_pvalb <- subset(data_neurons, subclass %in% 'Pvalb')
+data_pvalb <- as.data.frame(data_pvalb[,'X'])
+colnames(data_pvalb) <- 'x'
+write.csv(data_pvalb, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/pvalb_barcodes.csv", row.names=FALSE)
 
 
 
