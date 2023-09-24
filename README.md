@@ -620,6 +620,7 @@ Input: ~/Downloads/RNAseq/AIBSmapping/AO/n25.L0.65/prediction_scores.csv
 Output: 
 - AIBSpie.svg: pie chart of proportions 
 - AIBSmap_table: summary table
+- AIBS_L23_mappedToClusters.csv: counts of AIBS L2/3 subtypes mapped to C0-5 (Table 6)
 
 
 # DE analysis of clusters
