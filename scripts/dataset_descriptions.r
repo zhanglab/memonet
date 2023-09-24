@@ -374,6 +374,13 @@ write.csv(table, "~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures/clu
 data <- read.csv("~/Downloads/RNAseq/AIBSmapping/AO/parameter_loop/n25.L0.65_prediction_scores.csv")
 data <- data[,c('cluster_label','predicted.id')]
 
+#### table of counts ####
+table <-  as.data.frame(table(data$predicted.id, data$cluster_label))
+table <- table %>% pivot_wider(names_from = Var1, values_from = Freq)
+table <- as.data.frame(table)
+rownames(table) <- table$Var2
+table$Var2 <- NULL
+write.csv(table, "~/Downloads/RNAseq/AIBSmapping/AO/n25.L0.65/AIBS_L23_mappedToClusters.csv")
 
 #### get observed counts of AIBS cells per classifier cluster ####
 table <- as.data.frame(table(data$predicted.id))
