@@ -442,46 +442,39 @@ Output:
 
 
 
-# DE analysis for glutamatergic, GABAergic neurons
-## 1. Generate barcode files for glutamatergic and GABAergic neurons
+# DE analysis for neuron subtypes
+## 1. Generate barcode files for various subtypes
 Script: dataset_descriptions.r, Part B
 
 Input: data_neurons variable from Part A
 
 Output: 
-- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
-- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/glut_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/GABA_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/L5_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/pvalb_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/sst_barcodes.csv
+- ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/vip_barcodes.csv
 
 ## 2. Run DESeq2, train vs control
 ```{r}
 cd ~/Downloads/RNAseq/AIBSmapping/OA
 mkdir DESeq2
 cd DESeq2
-mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl
+mkdir glut_tr_vs_ctrl GABA_tr_vs_ctrl L5_tr_vs_ctrl pvalb_tr_vs_ctrl sst_tr_vs_ctrl vip_tr_vs_ctrl
 ```
 
 Script: DESeq2_tr_vs_ctrl.r
 
 
-**DE analysis of glutamatergic neurons:**
+**DE analysis:**
+Run the script in each subtype folder 
 
-Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl
+Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/<subtype>_tr_vs_ctrl
+- i.e. L5_tr_vs_ctrl
 
-Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv
-
-Output:
-- unnormalized_counts_from_dds.csv: unnormalized gene expression
-- normalized_sizeFactors_calculateSumFactors.csv: size factors that generate the normalized data
-- normalized_counts_from_dds.csv: normalized gene expression
-- train_vs_control_all_genes.csv: DESeq2 results for all genes
-- train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
-
-
-**DE analysis of GABAergic neurons:**
-
-Wd: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl
-
-Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv
+Input: ~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/<subtype>_barcodes.csv
+- i.e. L5_barcodes.csv
 
 Output:
 - unnormalized_counts_from_dds.csv: unnormalized gene expression
@@ -490,17 +483,7 @@ Output:
 - train_vs_control_all_genes.csv: DESeq2 results for all genes
 - train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
-
-## 3. Summarize DE results: what IEGs are significant?
-Script: genelist.r 
-
-Input:
-- DE results for GABAergic neurons: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/GABA_tr_vs_ctrl/train_vs_control_sig_genes.csv
-- DE results for glutamatergic neurons: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl/train_vs_control_sig_genes.csv
-
-Output:
-- ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl/GABA_IEG_DEresults.csv: IEGs that are significant according to DE analysis
-- ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/glut_tr_vs_ctrl/glut_IEG_DEresults.csv
+Rename the train_vs_control_sig_genes.csv file with the neuron subtype appended to the end like so: train_vs_control_sig_genes_pvalb.csv, train_vs_control_sig_genes_sst.csv, etc
 
 
 # DE analysis for L2/3 neurons
@@ -524,15 +507,19 @@ Output:
 - train_vs_control_sig_genes.csv: DESeq2 results for significant genes (padj <0.05)
 
 
-## 2. Summarize DE results: what IEGs are significant?
-Script: genelist.r 
+## 2. Summarize DE results and compare across neuron subtypes: what IEGs are significant?
+Script: IEGcomparison.r 
 
 Input:
-- DE results for L2/3 neurons: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes.csv
+- DE results for each neuron type
+  -L2/3: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes.csv
+  -L5: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L5_tr_vs_ctrl/train_vs_control_sig_genes_L5.csv
+  -Pvalb: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/pvalb_tr_vs_ctrl/train_vs_control_sig_genes_pvalb.csv
+  -Sst: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/sst_tr_vs_ctrl/train_vs_control_sig_genes_sst.csv
+  -Vip: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/vip_tr_vs_ctrl/train_vs_control_sig_genes_vip.csv
 
 Output:
-- ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/L23_IEG_DEresults.csv: IEGs that are significant according to DE analysis
-
+- Table listing the IEGs significantly up- or down-regulated in each neuron type: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/IEGcomparison_neuronTypes2.csv
 
 
 
@@ -541,7 +528,7 @@ Script: dataset_descriptions.r, part C
 
 Input:
 - Ranked gene list: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/PredictionGenesDescending0.3.csv
-- L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23/all_cells_combined/train_vs_control_sig_genes.csv
+- L2/3 DEG list: ~/Downloads/RNAseq/AIBSmapping/OA/DESeq2/L23_0.3_tr_vs_ctrl/train_vs_control_sig_genes.csv
 
 Output: The length of DEGoverlap$gene will tell you how many genes are shared between the two gene sets
 
