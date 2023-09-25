@@ -40,6 +40,7 @@ DESeq2_clusterX_vs_clusterY.r: DE analysis of one cluster vs a specified referen
 reactivation_score.r: calculate reactivation potential of the clusters
 
 
+
 #### Package and dependency versions by script: ####
 ## QCthresholds.r:
 
@@ -425,7 +426,7 @@ loaded via a namespace (and not attached):
 
 
 
-## Scripts run in RStudio: DEGvisuals, reactivation_score.r, classifier_umap_plot.r, dataset_descriptions.r, DESC_inputFormat.r, DESCnormalization.r, celltype_contaminants.r, prediction_score_cutoff_barcodes.r, mapping_test3.r, statistics.r, DESCparameterSummary.r, genelist.r
+## Scripts run in RStudio: DEGvisuals, reactivation_score.r, classifier_umap_plot.r, dataset_descriptions.r, DESC_inputFormat.r, DESCnormalization.r, celltype_contaminants.r, prediction_score_cutoff_barcodes.r, mapping_test3.r, statistics.r, DESCparameterSummary.r, IEGcomparison.r, filterSteps.r
 
 RStudio version: 1.4.1106
 
