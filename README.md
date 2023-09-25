@@ -395,6 +395,7 @@ Output: classifier_umap_tr_ctrl.svg
 
 ### Is there train/control enrichment?
 Script: statistics.r
+- Plot train/control proportions across cluster and calculate p-values for significance
 
 Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
 
@@ -402,8 +403,21 @@ Input:
 - Choose an input file at the beginning of script. For this part calculating cluster train/control proportions, use ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv
 
 Output:
-- cluster_tr_ctrl_prop_hist.svg
+- cluster_tr_ctrl_prop_hist.svg: bar plot of train/control proportion across cluster
+- ClusterMouseProp_mouseDots.csv: file containing data for above plot, plus proportion of each mouse across clusters
 - 'summary' variable lists p-values
+
+Script: ClusterMouseProp.py
+- Plot train/control proportions across cluster and have individual mouse proportions overlaid
+
+Wd: ~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures
+
+Input: 
+- ClusterMouseProp_mouseDots.csv
+
+Output: 
+- ClusterMouseProp_mouseDots.svg: bar plot of train/control proportion across cluster, with dots for each mouse overlaid 
+ 
 
 ### How many cells are in each cluster?
 Script: dataset_descriptions.r, Part D
