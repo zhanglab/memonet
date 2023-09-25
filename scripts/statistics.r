@@ -1,4 +1,4 @@
-# this script plots the train and control proportion of MEMONET cells in the 3 L2/3 subtypes and classifier clusters, respectively
+# this script plots the train and control proportion of MEMONET cells in the 3 L2/3 subtypes and classifier clusters
 
 
 
@@ -124,8 +124,40 @@ ggplot(data=table4, aes(x=cluster, y=Prop, fill=stim)) +
 ggsave(file= paste0("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures/",outfile,"tr_ctrl_prop_hist.svg"))
 ggsave(file= paste0("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures/",outfile,"tr_ctrl_prop_hist.png"))
 
-
-
+#-- to add dots to show each mouse on the plot, save file of data and plot in python with ClusterMouseProp.py:
+clusters <- read.csv("~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/clusters_n25.L0.65.csv")
+# rename column of barcodes from 'X' to 'barcodes'; also rename cluster column
+names(clusters)[1] <- 'barcodes'
+names(clusters)[2] <- 'cluster'
+clusters$sample <- sub("[[:print:]]*-", "",clusters$barcodes)
+clusters$sample <- as.character(clusters$sample)
+# get number of cells per mouse per cluster
+table5 <- as.data.frame(table(clusters$cluster, clusters$sample))
+colnames(table5) <- c('cluster','mouse','Freq')
+# calc total cells per mouse
+total_mouse <- aggregate(table5$Freq, by=list(mouse=table5$mouse), FUN=sum)
+colnames(total_mouse)[2] <- 'total_mouse'
+# join tables together so the total cells in each mouse is there 
+table5b <- left_join(table5, total_mouse, by='mouse')
+# calculate proportion of mouse in each cluster based on total mouse cells
+table5b$mouseProp <- table5b$Freq / table5b$total_mouse
+# check that prop for each mouse adds to 1
+aggregate(table5b$mouseProp, by=list(Var1=table5b$mouse), FUN=sum)
+# rearrange table into a matrix format
+table5b$Freq <- NULL
+table5b$total_mouse <- NULL
+table5b <- table5b %>%
+  mutate(stim = recode(mouse,
+                       "1" = "control",
+                       "2" = "train",
+                       "3" = "control",
+                       "4" = "train",
+                       "5" = "control",
+                       "6" = "train"))
+table6 <- inner_join(table5b, table4, by=c('cluster', 'stim'))
+write.csv(table6, "~/Downloads/RNAseq/cluster_by_genes/0.3cutoff/DESC/figures/ClusterMouseProp_mouseDots.csv", row.names=FALSE)
+  #open this file in ClusterMouseProp.py to plot mouse dots over the bar graph
+#--
 
 #### now for stats - randomly shuffle the control and train labels ####
 set.seed(12345)
