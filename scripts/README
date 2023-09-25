@@ -4,6 +4,7 @@
 #### Scripts, in order of use: ####
 download.sh: download MEMONET data
 QCthresholds.r: determine QC thresholds for dataset preprocessing based on violin plots of QC metrics
+filterSteps.r: provides the number of cells removed at each QC filter step
 mapping_OA.r: map MEMONET data to AIBS data
 mapping_test1.r: test the accuracy of the mapping pipeline on AIBS dataset; map 25% of AIBS data onto remaining 75%, 100 times
 mapping_test2.r: combine the 100 prediction_score_*.csv files from mapping_test1.r into one file
@@ -11,8 +12,9 @@ mapping_test3.r: summarize test results; compare mean and median scores of the t
 prediction_score_cutoff_barcodes: generate barcode lists of L2/3 cells based on various prediction score cutoff values
 DESCnormalization: normalize L2/3 counts
 celltype_contaminants: calculate mean expression of marker genes for cells removed at each prediciton score cutoff, to determine which cutoff removes glial contaminants
-dataset_descriptions.r: compare cell type proportions of AIBS and MEMONET datasets; generate barcode lists for GABAergic and glutamatergic neurons; 
-statistics.r: calculate significance of train and control proportion mapped to the AIBS L2/3 subtypes, and later for train and control mapped to clusters
+dataset_descriptions.r: compare cell type proportions of AIBS and MEMONET datasets; calculate number of AIBS L2/3 subtypes that map to each cluster; generate barcode lists for neuron subtypes
+statistics.r: calculate and plot significance of train and control proportion mapped to the AIBS L2/3 subtypes, and later for train and control mapped to clusters
+ClusterMouseProp.py: plot train/control proportion of each cluster, with individual mouse proportions overlaid
 
 #--- Logistic classifier scripts
 PlotLogisticFunction.m: plot logistic function
@@ -26,10 +28,10 @@ DESCparameterSummary.r: calculate avererage silhouette score per clustering resu
 sil_score_smooth.py: run a smoothing algorithm on the silhouette scores to find what parameter combination gives the peak score; we choose the parameter values at the peak for running DESC clustering
 DESC_EDGclustering.py: cluster using EDG-subset genelist using the chosen parameter values
 classifier_umap_plot: visualize clusters
-GOvisualization.r: run Gene Ontology analysis on the 3000 EDGs and later on the upregulated DEGs of the clusters
+GOvisualization.r: run Gene Ontology analysis on the 3000 EDGs, unique EDGs, and later on the upregulated DEGs of the clusters. Also adds a column to the L2/3 DE results to indicate whether each gene is also an EDG 
 GoTermAnalysis.m: plot GO results for specified GO terms
 DESeq2_tr_vs_ctrl.r: DE analysis of all glut, GABA, or L2/3 neurons
-genelist.r: summarize IEG significance from the DE analysis
+IEGcomparison.r: summarize IEG significance from DE analysis and generate table comparing the neuron subtypes
 DESeq2_clusterX_vs_others.r: DE analysis of one cluster vs others
 DESeq2-table.r: combine result files for each cluster into a single file
 DEGvisuals.r: visualize IEG significance results
