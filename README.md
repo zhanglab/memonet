@@ -96,6 +96,14 @@ Output:
 - train_without_cutoff.png
 - QC_train.png
 
+The number of cells removed with each filter step are given with filterSteps.r
+
+Input: 
+- MEMONET dataset: ~/Downloads/RNAseq/data/memonet_data/combined_cellranger_no-normalization/outs/filtered_feature_bc_matrix/
+
+Output:
+- Numbers are output on R console 
+
 
 # Map MEMONET data onto AIBS dataset ("OA mapping")
 ```{r}
