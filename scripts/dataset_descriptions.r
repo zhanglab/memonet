@@ -293,13 +293,13 @@ ggsave("~/Downloads/RNAseq/AIBSmapping/OA/CelltypePropPerDataset.png")
 data_glut <- subset(data_neurons, class %in% 'glut')
 data_glut <- as.data.frame(data_glut[,'X'])
 colnames(data_glut) <- 'x'
-write.csv(data_glut, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_glut_barcodes.csv", row.names=FALSE)
+write.csv(data_glut, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/glut_barcodes.csv", row.names=FALSE)
 
 ### save file of GABA barcodes, for DE analysis
 data_GABA <- subset(data_neurons, class %in% 'GABA')
 data_GABA <- as.data.frame(data_GABA[,'X'])
 colnames(data_GABA) <- 'x'
-write.csv(data_GABA, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/AIBS-defined_GABA_barcodes.csv", row.names=FALSE)
+write.csv(data_GABA, "~/Downloads/RNAseq/AIBSmapping/OA/barcode_files/GABA_barcodes.csv", row.names=FALSE)
 
 ### save file of L5 neuron barcodes for reviewer analysis
 data_L5 <- subset(data_neurons, subclass %in% c('L5 IT', 'L5 ET', 'L5 NP'))
