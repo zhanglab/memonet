@@ -282,6 +282,8 @@ TopGeneOptimization.m
 - Input: memonet/downloads/LogisticRegressionIndices.xlsx
     - This file lists the logistic regression weights for each gene, where indices match the order of genes in ~/Downloads/RNAseq/AIBSmapping/OA/count_matrices/DESCnormalized_counts_L23_0.3.csv
 
+Classifier_byAnimal.m
+- Calculates the prediction accuracy of the logistic classifier for each animal 
 
 ## 3. Subset to EDGs 
 ```{r}
