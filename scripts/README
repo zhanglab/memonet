@@ -20,6 +20,7 @@ ClusterMouseProp.py: plot train/control proportion of each cluster, with individ
 PlotLogisticFunction.m: plot logistic function
 ShuffledLogisticClassifier.m: test the classifier accuracy when cell labels ('train' or 'control') have been shuffled 100x
 TopGeneOptimization.m: makes the prediction accuracy optimization curve by looping over different numbers of top genes (sorted by their logistic regression indices)
+Classifier_byAnimal.m: calculates the prediction accuracy of the logistic classifier per animal
 #---
 
 DESC_inputFormat.r: subset L2/3 normalized counts to EDGs
